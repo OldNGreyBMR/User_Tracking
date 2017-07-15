@@ -588,9 +588,6 @@
 
           $col['body3'] = array();
 
-?>
-
-<?php
   $head = array();
   $head['center'] = array();
 
@@ -820,10 +817,7 @@ foreach ($user_tracking as $ut) {
                                 );
       }
 
-?>
-
-
-<?php  $row['center'][] = array_merge($col['center'], array('params'=>'class="dataTableRowSelected"'));
+       $row['center'][] = array_merge($col['center'], array('params'=>'class="dataTableRowSelected"'));
 
        $col['center'] = array();
 
@@ -839,8 +833,8 @@ foreach ($user_tracking as $ut) {
                                 'text' => $boxes['table']['time_table'],
                                 );
 
-?>
-                          <?php $row['center'][] = array_merge($col['center'], array('params'=>'bgcolor="ffffff"'));
+
+                          $row['center'][] = array_merge($col['center'], array('params'=>'bgcolor="ffffff"'));
 
                           $col['center'] = array();
 
@@ -848,9 +842,6 @@ foreach ($user_tracking as $ut) {
                                                    'align' => 'right" valign="top',
                                                    'text' => '<b>' . TABLE_HEADING_COUNTRY . '</b>',
                                                    );
-                          ?>
-              
-       <?php
        $row['center'][] = array_merge($col['center'], array('params'=>'bgcolor="ffffff"'));
 
        $col['center'] = array();
@@ -879,8 +870,6 @@ foreach ($user_tracking as $ut) {
 
        $col['center'] = array();
 
-       ?>
-<?php
       $ref_name = chunk_split($referer_url,40,"<br>");
 
        $col['center'][] = array('params' => 'class="dataTableContent"',
@@ -897,9 +886,6 @@ foreach ($user_tracking as $ut) {
        $col['center'] = array();
 
 
-?>
-
-<?php
 
       $row['visited'] = array();
 
@@ -923,8 +909,6 @@ foreach ($user_tracking as $ut) {
                             'align' => 'left',
                             'text' => '<a href="' . $pu . '" target="_new">' . chunk_split($pu,40,"<br />") . '</a>'
                            );
-    ?>
-<?php
           $row['visited'][] = array_merge($column, array('params'=>'bgcolor="ffffff"'));
         }
       }
@@ -953,11 +937,6 @@ foreach ($user_tracking as $ut) {
   }
 }
 
-
-?>
-<?php
-?>
-<?php
           $col['body3'][] = array('params' => 'id="centerboxcol"',
                                   'align' => 'center" valign="top',
                                   'text' => $boxes['center']->infoBox($emptybgheading, $row['center']),
@@ -978,20 +957,15 @@ foreach ($user_tracking as $ut) {
       $col['body3'] = array();
 
 
-          ?>
-<?php
 // Start User Tracking - Ver 1.4.2 Mod 1 of
 //  echo '<b>' . TEXT_SELECT_VIEW .': </b>';
 
   //Display links to move forward and backwards in time on the database.
 //  echo $navLinks;
 
-   ?>
-<?php // From above row to be added to body2
+ // From above row to be added to body2
 
 
-?>
-  <?php
     $col['body2'][] = array('text' => $boxes['body3']->infoBox($emptybgheading, $row['body3']),
                          );
     $row['body2'][] = $col['body2'];
