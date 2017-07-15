@@ -588,10 +588,8 @@
 
           $col['body3'] = array();
 
-?><!--        <table border="0" width="100%" cellspacing="0" cellpadding="0"> -->
-<!--    <tr>
-      <td valign="top" align="center">
-        <table border="0" width="95%" cellspacing="0" cellpadding="2">-->
+?>
+
 <?php
   $head = array();
   $head['center'] = array();
@@ -806,13 +804,11 @@ foreach ($user_tracking as $ut) {
         $boxes['cart'] = new box;
         $boxes['cart']->table_parameters = 'bgcolor="999999"';
 
-        ?><!--<span class="UTBox-cart">--><?php
+        
         $col['center'][] = array( 'params' => 'rowspan="4" valign="top" class="UTBox-cart"', // dataTableRowSelected"',
                                   'text' => $boxes['cart']->infoBox($emptyheading, $contents),
                                 );
 
-//        echo $boxes['cart']->infoBox($emptyheading, $contents);
-//        echo '<!--</span>-->            </td>' . "\n";
       }
       else
       {
@@ -826,7 +822,7 @@ foreach ($user_tracking as $ut) {
 
 ?>
 
-<!--              </tr> -->
+
 <?php  $row['center'][] = array_merge($col['center'], array('params'=>'class="dataTableRowSelected"'));
 
        $col['center'] = array();
@@ -843,14 +839,7 @@ foreach ($user_tracking as $ut) {
                                 'text' => $boxes['table']['time_table'],
                                 );
 
-?><!--                      <tr>
-        <td class="dataTableContent" align="right" valign="top"><b>--><?php /*echo TEXT_CLICK_COUNT;*/ ?><!--</b></td>
-        <td class="dataTableContent" valign="top"><font color="FF0000"><b>--><?php /*echo count($ut['last_page_url']);*/?><!--</b></font></td>
-        <td class="dataTableContent UTBox" colspan="2" rowspan="4" align="center">-->
-        <!--<span class="UTBox">--><?php
-        //echo $boxes['table']['time_table'];
-      ?><!--</span></td>
-                          </tr>-->
+?>
                           <?php $row['center'][] = array_merge($col['center'], array('params'=>'bgcolor="ffffff"'));
 
                           $col['center'] = array();
@@ -860,17 +849,7 @@ foreach ($user_tracking as $ut) {
                                                    'text' => '<b>' . TABLE_HEADING_COUNTRY . '</b>',
                                                    );
                           ?>
-              <!--<tr>
-        <td class="dataTableContent" align="right" valign="top"><b><?php echo TABLE_HEADING_COUNTRY; ?></b></td>
-<?php $flag = strtolower(geoip_country_code_by_addr($gi, $ut['ip_address']));
-      $cn = geoip_country_name_by_addr($gi, $ut['ip_address']);
-      if ($flag == '') $flag = 'unknown';
-      if ($cn == '') $cn = 'unknown';
-      $col['center'][] = array('params' => 'class="dataTableContent" valign="top"',
-                               'text' => zen_image(DIR_WS_FLAGS . $flag . '.gif', $cn) . '&nbsp;' . $cn,
-                              );?>
-        <td class="dataTableContent" valign="top"><?php echo zen_image(DIR_WS_FLAGS . $flag . '.gif', $cn); ?>&nbsp;<?php echo $cn; ?></td>
-       </tr>-->
+              
        <?php
        $row['center'][] = array_merge($col['center'], array('params'=>'bgcolor="ffffff"'));
 
@@ -900,17 +879,7 @@ foreach ($user_tracking as $ut) {
 
        $col['center'] = array();
 
-       ?><!--
-              <tr>
-        <td class="dataTableContent" align="right" valign="top"><b><?php echo TABLE_HEADING_IP_ADDRESS; ?></b></td>
-        <td class="dataTableContent" valign="top"><a href="<?php echo USER_TRACKING_WHOIS_URL; ?><?php echo $ut['ip_address']; ?>" target="_new"><?php echo $ut['ip_address']; ?></a></td>
-       </tr>
-       <tr>
-        <td class="dataTableContent" align="right" valign="top"><b><?php echo TABLE_HEADING_HOST; ?></b></td>
-        <td class="dataTableContent" valign="top"><?php echo $ut['customers_host_address']/*echo gethostbyaddr($ut['value']['ip_address']) too slow under WINDOWS */; ?></td>
-       </tr>
-       <tr>
-        <td class="dataTableContent" align="right" valign="top"><b><?php echo TEXT_ORIGINATING_URL; ?></b></td>-->
+       ?>
 <?php
       $ref_name = chunk_split($referer_url,40,"<br>");
 
@@ -929,12 +898,7 @@ foreach ($user_tracking as $ut) {
 
 
 ?>
-<!--        <td class="dataTableContent" align="left" valign="top" colspan="3"><?php echo '<a href="'.htmlspecialchars($ut['referer_url']).'" target="_new">'. htmlspecialchars($ut['referer_url']) .'</a>'; ?>&nbsp;</td>
-       </tr>
-       <tr>
-        <td class="dataTableContent"></td>
-        <td class="dataTableContent" colspan="3">-->
- <!--       <table border="0" cellspacing="1" cellpadding="2" bgcolor="999999" width="100%">-->
+
 <?php
 
       $row['visited'] = array();
@@ -960,11 +924,6 @@ foreach ($user_tracking as $ut) {
                             'text' => '<a href="' . $pu . '" target="_new">' . chunk_split($pu,40,"<br />") . '</a>'
                            );
     ?>
-        <!--  <tr bgcolor="ffffff">
-            <td class="dataTableContent" valign="top" align="right"><?php echo date('H:i:s', $key); ?>:</td>
-            <td class="dataTableContent" nowrap valign="top" align="left">&nbsp;<a href="<?php echo $pu; ?>" target="_new"><?php if ($du!=''){ echo $du;} ?></a>&nbsp;</td>
-            <td class="dataTableContent" width="100%" align="left"><a href="<?php echo $pu; ?>" target="_new"><?php echo chunk_split($pu,40,"<br>"); ?></a></td>
-          </tr> -->
 <?php
           $row['visited'][] = array_merge($column, array('params'=>'bgcolor="ffffff"'));
         }
@@ -996,12 +955,8 @@ foreach ($user_tracking as $ut) {
 
 
 ?>
-<!--       <tr>
-        <td class="smallText" colspan="7"><?php echo sprintf(TEXT_NUMBER_OF_CUSTOMERS, $results); /*Start User Tracking - Spider Mod 7 of 7 */ echo sprintf(TEXT_NUMBER_OF_USERS, $num_sessions); echo sprintf(TEXT_NUMBER_OF_SPIDERS, $spiderCount); /*End User Tracking - Spider Mod 7 of 7 */ ?></td>
-       </tr>
-      </table>--><?php
-?><!--</td>
-     </tr>-->
+<?php
+?>
 <?php
           $col['body3'][] = array('params' => 'id="centerboxcol"',
                                   'align' => 'center" valign="top',
@@ -1024,9 +979,6 @@ foreach ($user_tracking as $ut) {
 
 
           ?>
-<!--    <tr>
-      <td class="smallText" colspan="7">
-      <br />-->
 <?php
 // Start User Tracking - Ver 1.4.2 Mod 1 of
 //  echo '<b>' . TEXT_SELECT_VIEW .': </b>';
@@ -1034,17 +986,11 @@ foreach ($user_tracking as $ut) {
   //Display links to move forward and backwards in time on the database.
 //  echo $navLinks;
 
-   ?><!--</form>
-      </td>
-     </tr> -->
+   ?>
 <?php // From above row to be added to body2
 
 
 ?>
-<!--    </table>
-   </td>
-   </tr>
-  </table>-->
   <?php
     $col['body2'][] = array('text' => $boxes['body3']->infoBox($emptybgheading, $row['body3']),
                          );
@@ -1054,10 +1000,9 @@ foreach ($user_tracking as $ut) {
 
 //    echo $boxes['body2']->infoBox($head['center'], $row['body2']);
   ?>
-<!--  </td>-->
+
 <!-- body_text_eof //-->
-<!-- </tr>
-</table>-->
+
 <?php
 
   $col['body'][] = array('params' => 'valign="top" width="100%"',
@@ -1080,7 +1025,7 @@ foreach ($user_tracking as $ut) {
   echo $boxes['body']->infoBox($emptybgheading, $row['body']); // Display the entire table makeup.
 
 ?>
-<!-- </form> -->
+
 <!-- body_eof //-->
 
 <!-- footer //-->
