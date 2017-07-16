@@ -3,9 +3,9 @@
 /**
  * Autoloader array for user tracking functionality. Makes sure that user tracking is instantiated at the
  * right point of the Zen Cart initsystem.
- * 
+ *
  * @package     user_tracking
- * @author      mc12345678 
+ * @author      mc12345678
  * @copyright   Copyright 2008-2013 mc12345678
  * @copyright   Copyright 2003-2007 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
@@ -22,5 +22,4 @@
 	'autoType' => 'classInstantiate',
 	'className' => 'user_tracking',
 	'objectName' => 'user_tracking_observe'
-	); 
-?>
+	);

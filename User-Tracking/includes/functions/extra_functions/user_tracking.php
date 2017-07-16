@@ -19,96 +19,66 @@
 // +----------------------------------------------------------------------+
 //  $Id: usertracking 2004-12-1 dave@open-operations.com http://open-operations.com
 function zen_update_user_tracking()
-  {
+{
     global $db;
-    
-    foreach(explode(",", CONFIG_USER_TRACKING_EXCLUDED) as $skip_ip) {
-      $skip_tracking[trim($skip_ip)] = 1;
-    }
-    if ($_SESSION['customer_id']) {
-//      $wo_customer_id = $customer_id;
-      $customer = $db->Execute("select customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " where customers_id = " . (int)$_SESSION['customer_id']);
-      $wo_full_name = $db->prepare_input($customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname']);
-    }
-    else {
-//      $wo_customer_id = '';
-      $wo_full_name = $db->prepare_input('Guest');
-    }
-    $wo_session_id = $db->prepare_input(zen_session_id());
-    $wo_ip_address = getenv('REMOTE_ADDR');
-    $wo_last_page_url = addslashes(getenv('REQUEST_URI'));
-    $referer_url = ($_SERVER['HTTP_REFERER'] == '') ?  $wo_last_page_url : $_SERVER['HTTP_REFERER'];
-        if (($_GET['products_id'] || $_GET['cPath'])) {
-                if ($_GET['cPath'] && ZEN_CONFIG_SHOW_USER_TRACKING_CATEGORY == 'true') {   // JTD:12/04/06 - Woody feature request
-                        $cPath = $_GET['cPath'];
-                        $cPath_array = zen_parse_category_path($cPath);
-                        $cPath = implode('_', $cPath_array);
-                        $current_category_id = array_pop($cPath_array);
-                        $page_desc_values = $db->Execute("select categories_name from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = " . (int)$current_category_id);
-                        $page_desc = $db->prepare_input($page_desc_values->fields['categories_name'] . '&nbsp;-&nbsp;');
-                }
-        if ($_GET['products_id']) {
-                $page_desc_values = $db->Execute("select products_name from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = " . (int)$_GET['products_id'] . " and language_id = " . (int)$_SESSION['languages_id']);
-                $page_desc .= $db->prepare_input($page_desc_values->fields['products_name']);
-            }
-        }
-        else {
-                $page_desc = $db->prepare_input(HEADING_TITLE);
-                if ($page_desc == "HEADING_TITLE")
-                        $page_desc = $db->prepare_input(NAVBAR_TITLE);
-        }
-        $current_time = $db->prepare_input(time());
-	   $current_time = $current_time;
-    if ($skip_tracking[$wo_ip_address] != 1) {
-    // JTD:05/15/06 - Query bug fixes for mySQL 5.x
-	    $wo_ip_address = $db->prepare_input($wo_ip_address);
-	    
-	    $cust_id = (int)$_SESSION['customer_id'];
-        if ($cust_id == NULL) {
-            $cust_id = 0;
-        }
 
-    $cust_id = $db->prepare_input($cust_id);
-    
-	 $customers_host_address = $_SESSION['customers_host_address']; // JTD:11/27/06 - added host address support
-    $customers_host_address = $db->prepare_input($customers_host_address);
+    foreach (explode(",", CONFIG_USER_TRACKING_EXCLUDED) as $skip_ip) {
+        $skip_tracking[trim($skip_ip)] = 1;
+    }
+    $wo_ip_address = zen_get_ip_address(); //getenv('REMOTE_ADDR');
+    if ($skip_tracking[$wo_ip_address] != 1) return;
+
+    if ($_SESSION['customer_id']) {
+        $customer     = $db->Execute("select customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " where customers_id = " . (int)$_SESSION['customer_id']);
+        $wo_full_name = $customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname'];
+    } else {
+        $wo_full_name = 'Guest';
+    }
+    $wo_session_id    = zen_session_id();
+    $wo_last_page_url = addslashes(getenv('REQUEST_URI'));
+    $referer_url      = ($_SERVER['HTTP_REFERER'] == '') ? $wo_last_page_url : $_SERVER['HTTP_REFERER'];
+    $page_desc        = '';
+    if (($_GET['products_id'] || $_GET['cPath'])) {
+        if ($_GET['cPath'] && ZEN_CONFIG_SHOW_USER_TRACKING_CATEGORY == 'true') {   // JTD:12/04/06 - Woody feature request
+            $cPath_array         = zen_parse_category_path($_GET['cPath']);
+            $cPath               = implode('_', $cPath_array);
+            $current_category_id = array_pop($cPath_array);
+            $page_desc           = zen_get_categories_name((int)$current_category_id) . '&nbsp;-&nbsp;';
+        }
+        if ($_GET['products_id']) {
+            $page_desc = zen_get_products_name((int)$_GET['products_id']);
+        }
+    } else {
+        $page_desc = defined('HEADING_TITLE') ? HEADING_TITLE : NAVBAR_TITLE;
+    }
+    $current_time = time();
+
+    $cust_id = (int)$_SESSION['customer_id'];
+    if ($cust_id === null) {
+        $cust_id = 0;
+    }
+
+    $customers_host_address = $_SESSION['customers_host_address']; // JTD:11/27/06 - added host address support
 
     $page_desc = substr($page_desc, 0, 63);
-	/* Start - User tracking v1.4.3b modification*/
-    /*while (strpos(substr($page_desc, -1), '\\') !== false) {
-		$page_desc = substr($page_desc, 0, -1);    
-	}*/
-	/* End - User tracking v1.4.3b modification*/
-	$wo_last_page_url = $db->prepare_input($wo_last_page_url);
-	
-	$wo_last_page_url = substr($wo_last_page_url, 0, 125);
-	/* Start - User tracking v1.4.3b modification*/
-    /*while (strpos(substr($wo_last_page_url, -1), '\\') !== false) {
-		$wo_last_page_url = substr($wo_last_page_url, 0, -1);    
-	}*/
 
-	$referer_url = $db->prepare_input($referer_url);
+    $wo_last_page_url = substr($wo_last_page_url, 0, 125);
 
-	$referer_url = substr($referer_url, 0, 253);
 
-	/*while (strpos(substr($referer_url, -1), '\\') !== false) {
-		$referer_url = substr($referer_url, 0, -1);    
-	}*/
-	$user_track_array = array();
-	$user_track_array[] = array('fieldName'=>'customer_id', 'value'=>$cust_id, 'type'=>'string');
-	$user_track_array[] = array('fieldName'=>'full_name', 'value'=>$wo_full_name, 'type'=>'string');
-	$user_track_array[] = array('fieldName'=>'session_id', 'value'=>$wo_session_id, 'type'=>'string');
-	$user_track_array[] = array('fieldName'=>'ip_address', 'value'=>$wo_ip_address, 'type'=>'string');
-	$user_track_array[] = array('fieldName'=>'time_entry', 'value'=>$current_time, 'type'=>'date');
-	$user_track_array[] = array('fieldName'=>'time_last_click', 'value'=>$current_time, 'type'=>'date');
-	$user_track_array[] = array('fieldName'=>'last_page_url', 'value'=>$wo_last_page_url, 'type'=>'string');
-	$user_track_array[] = array('fieldName'=>'referer_url', 'value'=>$referer_url, 'type'=>'string');
-	$user_track_array[] = array('fieldName'=>'page_desc', 'value'=>$page_desc, 'type'=>'string');
-	$user_track_array[] = array('fieldName'=>'customers_host_address', 'value'=>$customers_host_address, 'type'=>'string');
-	
-	/* End - User tracking v1.4.3b modification*/
-	$db->perform(TABLE_USER_TRACKING, $user_track_array);
-//    $db->Execute("insert into " . TABLE_USER_TRACKING . " (customer_id, full_name, session_id, ip_address, time_entry, time_last_click, last_page_url, referer_url, page_desc, customers_host_address) values ('" . $cust_id . "', '" . $wo_full_name . "', '" . $wo_session_id . "', '" . $wo_ip_address . "', '" . $current_time . "', '" . $current_time . "', '" . $wo_last_page_url . "', '" . $referer_url . "', '" . $page_desc . "', '" . $customers_host_address . "')");
-    }
-  }
-?>
+    $referer_url = substr($referer_url, 0, 253);
+
+    $user_track_array = array();
+
+    $user_track_array[] = ['fieldName' => 'customer_id', 'value' => $cust_id, 'type' => 'string'];
+    $user_track_array[] = ['fieldName' => 'full_name', 'value' => $wo_full_name, 'type' => 'string'];
+    $user_track_array[] = ['fieldName' => 'session_id', 'value' => $wo_session_id, 'type' => 'string'];
+    $user_track_array[] = ['fieldName' => 'ip_address', 'value' => $wo_ip_address, 'type' => 'string'];
+    $user_track_array[] = ['fieldName' => 'time_entry', 'value' => $current_time, 'type' => 'date'];
+    $user_track_array[] = ['fieldName' => 'time_last_click', 'value' => $current_time, 'type' => 'date'];
+    $user_track_array[] = ['fieldName' => 'last_page_url', 'value' => $wo_last_page_url, 'type' => 'string'];
+    $user_track_array[] = ['fieldName' => 'referer_url', 'value' => $referer_url, 'type' => 'string'];
+    $user_track_array[] = ['fieldName' => 'page_desc', 'value' => $page_desc, 'type' => 'string'];
+    $user_track_array[] = ['fieldName' => 'customers_host_address', 'value' => $customers_host_address, 'type' => 'string'];
+
+    $db->perform(TABLE_USER_TRACKING, $user_track_array);
+}
