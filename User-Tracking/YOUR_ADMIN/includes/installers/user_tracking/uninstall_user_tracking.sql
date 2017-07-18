@@ -3,7 +3,7 @@
 */
 DROP TABLE IF EXISTS user_tracking;
 
-SELECT @UserTrackgID := configuration_group_id 
+SELECT @UserTrackgID := configuration_group_id
 FROM configuration_group where configuration_group_title LIKE '%User Tracking%';
 
 DELETE FROM admin_pages WHERE page_key = 'UserTracking';

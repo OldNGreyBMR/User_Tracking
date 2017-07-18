@@ -67,14 +67,14 @@ if (is_dir($module_installer_directory)) {
   // Step through each installer file to establish the first file that matches the search criteria.
   while (substr($installers[0], strrpos($installers[0], '.')) != $file_extension || preg_match('~^[^\._].*\.php$~i', $installers[0]) <= 0 || $installers[0] == 'empty.txt') {
     unset($installers[0]);
-    if (sizeof($installers) == 0) {
+    if (count($installers) == 0) {
       break;
     }
     $installers = array_values($installers);
   }
 
   // If there are still installer files to process, then do so.
-  if (sizeof($installers) > 0) {
+  if (count($installers) > 0) {
       $newest_version = $installers[0];
       $newest_version = substr($newest_version, 0, -1 * $file_extension_len);
 
@@ -166,4 +166,3 @@ if ($zencart_com_plugin_id != 0 && SHOW_VERSION_UPDATE_IN_HEADER && (!defined($m
         $messageStack->add("Version ".$new_version_details['latest_plugin_version']." of " . $new_version_details['title'] . ' is available at <a href="' . $new_version_details['link'] . '" target="_blank">[Details]</a>', 'caution');
     }
 }
- 

@@ -237,7 +237,7 @@
     {
 // JTD:10/27/05
 //    $db->Execute("DELETE FROM " . TABLE_USER_TRACKING . " where time_last_click < '"  . (time() - ($purge * 3600))."'");
-      $db->Execute('DELETE FROM ' . TABLE_USER_TRACKING . " WHERE time_last_click < '" . ($currentTime - (CONFIG_USER_TRACKING_PURGE_NUMBER * 60 * CONFIG_USER_TRACKING_PURGE_UNITS))."'"); //v1.4.3 2 of 15 
+      $db->Execute('DELETE FROM ' . TABLE_USER_TRACKING . " WHERE time_last_click < '" . ($currentTime - (CONFIG_USER_TRACKING_PURGE_NUMBER * 60 * CONFIG_USER_TRACKING_PURGE_UNITS))."'"); //v1.4.3 2 of 15
 
       $deleted_span_text = '<p><font color="red">' . TEXT_HAS_BEEN_PURGED . '</font></p>';
     } else {
@@ -282,7 +282,7 @@
     $user_tracking = array();
 
     while (!$whos_online->EOF) {
-      if ($user_filter_search == 'HideOnly' && !empty($user_tracking) && array_key_exists('filterwordfound', $user_tracking[$whos_online->fields['session_id']])) {
+      if ($user_filter_search == 'HideOnly' && !empty($user_tracking) && !empty($user_tracking[$whos_online->fields['session_id']]) && array_key_exists('filterwordfound', $user_tracking[$whos_online->fields['session_id']])) {
         $whos_online->MoveNext();
         continue;
       }
@@ -295,8 +295,8 @@
       if ($whos_online->fields['full_name'] != 'Guest') {
         $user_tracking[$whos_online->fields['session_id']]['full_name'] = '<font color="0000ff"><b>' . $whos_online->fields['full_name'] . '</b></font>';
       }
-      
-      if (!array_key_exists('filterwordfound', $user_tracking[$whos_online->fields['session_id']])) { 
+
+      if (!array_key_exists('filterwordfound', $user_tracking[$whos_online->fields['session_id']])) {
         foreach ($user_filter_search_words as $filter_word) {
           if (stripos($whos_online->fields['last_page_url'],$filter_word) !== false) {
             $user_tracking[$whos_online->fields['session_id']]['filterwordfound'] = true;
@@ -304,7 +304,7 @@
           }
         }
       }
-      
+
       $user_tracking[$whos_online->fields['session_id']]['last_page_url'][$whos_online->fields['time_last_click']] = $whos_online->fields['last_page_url'];
 
       $user_tracking[$whos_online->fields['session_id']]['page_desc'][$whos_online->fields['time_last_click']] = $whos_online->fields['page_desc'];
@@ -484,19 +484,19 @@
                    );
   $col['header'][] = array('params' => 'class="Spiders"',
                     'align' => 'left',
-                    'text' => '<span style="white-space: nowrap;">' . zen_draw_radio_field('SpiderYes', 'HideSpiders', $displaySpider == false, NULL, ( ($displaySpider == true) ? 'onClick="this.form.submit();"' : '' ) . 'id="HideSpiders"') 
+                    'text' => '<span style="white-space: nowrap;">' . zen_draw_radio_field('SpiderYes', 'HideSpiders', $displaySpider == false, NULL, ( ($displaySpider == true) ? 'onClick="this.form.submit();"' : '' ) . 'id="HideSpiders"')
                     . TEXT_HIDE_SPIDERS . '</span>'
-                    . ' ' . '<span style="white-space: nowrap;">' . zen_draw_radio_field('SpiderYes', 'ShowSpiders', $displaySpider == true, NULL, ( ($displaySpider == false) ? 'onClick="this.form.submit();"' : '' ) . 'id="ShowSpiders"') 
+                    . ' ' . '<span style="white-space: nowrap;">' . zen_draw_radio_field('SpiderYes', 'ShowSpiders', $displaySpider == true, NULL, ( ($displaySpider == false) ? 'onClick="this.form.submit();"' : '' ) . 'id="ShowSpiders"')
                     . TEXT_SHOW_SPIDERS . '</span>'
                     . (CONFIG_USER_TRACKING_TRACK_TYPE_RECORD == '3'? TEXT_OPTION3_SPIDER_HIDE : TEXT_SPIDER_HIDE_OTHERS)
                    );
   $col['header'][] = array('params' => 'class="UserFilterSearch"',
                            'align' => 'left',
-                           'text' => '<span style="white-space: nowrap;">' . zen_draw_radio_field('UserFilteredWordSearch', 'ShowAll', $user_filter_search == 'ShowAll', NULL, (($user_filter_search !== 'ShowAll') ? 'onClick="this.form.submit();"' : '') . 'id="ShowAllFiltered"') 
+                           'text' => '<span style="white-space: nowrap;">' . zen_draw_radio_field('UserFilteredWordSearch', 'ShowAll', $user_filter_search == 'ShowAll', NULL, (($user_filter_search !== 'ShowAll') ? 'onClick="this.form.submit();"' : '') . 'id="ShowAllFiltered"')
                            . TEXT_USER_FILTER_ALL . '</span>'
-                           . ' ' . '<span style="white-space: nowrap;">' . zen_draw_radio_field('UserFilteredWordSearch', 'HideOnly', $user_filter_search == 'HideOnly', NULL, (($user_filter_search !== 'HideOnly') ? 'onClick="this.form.submit();"' : '') . 'id="HideOnlyFiltered"') 
+                           . ' ' . '<span style="white-space: nowrap;">' . zen_draw_radio_field('UserFilteredWordSearch', 'HideOnly', $user_filter_search == 'HideOnly', NULL, (($user_filter_search !== 'HideOnly') ? 'onClick="this.form.submit();"' : '') . 'id="HideOnlyFiltered"')
                            . TEXT_USER_FILTER_HIDE . '</span>'
-                           . ' ' . '<span style="white-space: nowrap;">' . zen_draw_radio_field('UserFilteredWordSearch', 'ShowOnly', $user_filter_search == 'ShowOnly', NULL, (($user_filter_search !== 'ShowOnly') ? 'onClick="this.form.submit();"' : '') . 'id="ShowOnlyFiltered"') 
+                           . ' ' . '<span style="white-space: nowrap;">' . zen_draw_radio_field('UserFilteredWordSearch', 'ShowOnly', $user_filter_search == 'ShowOnly', NULL, (($user_filter_search !== 'ShowOnly') ? 'onClick="this.form.submit();"' : '') . 'id="ShowOnlyFiltered"')
                            . TEXT_USER_FILTER_ONLY . '</span>'
                            );
   $col['header'][] = array('params' => 'class="MinView"',
@@ -626,7 +626,7 @@ foreach ($user_tracking as $ut) {
       }
       // If supposed to hide all of the users that attempted a word, then when one is found, skip to the next.
       $local_filter_found = array_key_exists('filterwordfound', $ut);
-      
+
       if ($user_filter_search == 'HideOnly' && $local_filter_found) {
         continue;
       }
@@ -639,7 +639,7 @@ foreach ($user_tracking as $ut) {
       {
         $ut['full_name'] = "Guest";
       }
-      
+
       if($ut['full_name'] != "Guest")
       {
         $stripped_name = strip_tags($ut['full_name']);
@@ -752,7 +752,7 @@ foreach ($user_tracking as $ut) {
 
       $cart = "";
       $referer_url = "";
-    //$num_sessions ++; // User Tracking - Spiders Mod 5 of 7 
+    //$num_sessions ++; // User Tracking - Spiders Mod 5 of 7
 //    $_SESSION['cart'] = array();
 
       $orig_session = $_SESSION;
@@ -775,12 +775,12 @@ foreach ($user_tracking as $ut) {
 
       if (is_object($_SESSION['cart']) /*&& sizeof($_SESSION['cart']) > 0*/) {
         $products = $_SESSION['cart']->get_products();
-        for ($i = 0, $n = sizeof($products); $i < $n; $i++) {
+        for ($i = 0, $n = count($products); $i < $n; $i++) {
           $contents[] = array('text' => $products[$i]['quantity'] . ' x ' . '<a href="' . zen_href_link(FILENAME_CATEGORIES, 'cPath=' . zen_get_product_path($products[$i]['id']) . '&pID=' . $products[$i]['id']) . '">' . $products[$i]['name'] . '</a>');
 // cPath=23&pID=74
         }
 
-        if (sizeof($products) > 0) {
+        if (count($products) > 0) {
           $contents[] = array('text' => zen_draw_separator('pixel_black.gif', '100%', '1'));
           $contents[] = array('align' => 'right', 'text'  => TEXT_SHOPPING_CART_SUBTOTAL . ' ' . $currencies->format($_SESSION['cart']->show_total(), true, $_SESSION['currency']));
         } else {
@@ -972,7 +972,7 @@ foreach ($user_tracking as $ut) {
       $boxes['visited'] = new box;
       $boxes['visited']->table_cellspacing = '1';
       $boxes['visited']->table_parameters = 'bgcolor="999999" class="UTBox"';
-      if (sizeof($row['visited']) > 0) {
+      if (count($row['visited']) > 0) {
 
 
        $col['center'][] = array('params' => 'colspan="3"',

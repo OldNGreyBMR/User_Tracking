@@ -11,8 +11,8 @@ $zc150 = (PROJECT_VERSION_MAJOR > 1 || (PROJECT_VERSION_MAJOR == 1 && substr(PRO
 if ($zc150) { // continue Zen Cart 1.5.0
 
     $UTExists = FALSE;
-  
-    if (function_exists('zen_page_key_exists')) 
+
+    if (function_exists('zen_page_key_exists'))
     {
         $UTExists = zen_page_key_exists($admin_page . 'Config');
     } else {
@@ -39,32 +39,32 @@ if ($zc150) { // continue Zen Cart 1.5.0
                       'USER_TRACKING_WHOIS_URL',
                       'ZEN_CONFIG_SHOW_USER_TRACKING_CATEGORY',
                   );
-  
+
     if (!$UTExists)
     {
 
         if ((int)$configuration_group_id > 0) {
             zen_register_admin_page($admin_page . 'Config',
-                                'BOX_TOOLS_' . $module_constant . '_CONFIG', 
+                                'BOX_TOOLS_' . $module_constant . '_CONFIG',
                                 'FILENAME_CONFIGURATION',
-                                'gID=' . $configuration_group_id, 
-                                'configuration', 
+                                'gID=' . $configuration_group_id,
+                                'configuration',
                                 'Y',
                                 $configuration_group_id);
-          
+
             $messageStack->add('Enabled User Tracking Configuration Menu.', 'success');
 
             zen_register_admin_page($admin_page,
-                                'BOX_TOOLS_' . $module_constant, 
+                                'BOX_TOOLS_' . $module_constant,
                                 'FILENAME_' . $module_constant,
-                                'gID=' . $configuration_group_id, 
-                                'tools', 
+                                'gID=' . $configuration_group_id,
+                                'tools',
                                 'Y',
                                 $configuration_group_id);
-          
+
             $messageStack->add('Enabled User Tracking Menu.', 'success');
         }
-        
+
         if (defined('TABLE_USER_TRACKING'))
         {
             $table_create = $db->Execute("

@@ -10,5 +10,5 @@
 $zc150 = (PROJECT_VERSION_MAJOR > 1 || (PROJECT_VERSION_MAJOR == 1 && substr(PROJECT_VERSION_MINOR, 0, 3) >= 5));
 if ($zc150) { // continue Zen Cart 1.5.0
     // Updated installer to restore proper operation.
-    
+
 } // END OF VERSION 1.5.x INSTALL

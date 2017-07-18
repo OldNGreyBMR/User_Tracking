@@ -3,9 +3,9 @@
 /**
  * Autoloader array for user tracking functionality. Makes sure that user tracking is instantiated at the
  * right point of the Zen Cart initsystem.
- * 
+ *
  * @package     user_tracking
- * @author      mc12345678 
+ * @author      mc12345678
  * @copyright   Copyright 2008-2013 mc12345678
  * @copyright   Copyright 2003-2007 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
@@ -16,15 +16,14 @@
 
 if (!defined('IS_ADMIN_FLAG')) {
 	die('Illegal Access');
-} 
+}
 
- $autoLoadConfig[185][] = array(
+ $autoLoadConfig[0][] = array(
 	'autoType' => 'class',
-	'loadFile' => 'class.user_tracking.php',
-	'classPath'=>DIR_WS_CLASSES
+	'loadFile' => 'observers/class.user_tracking.php'
 	);
  $autoLoadConfig[199][] = array(
 	'autoType' => 'classInstantiate',
-	'className' => 'user_tracking_admin',
-	'objectName' => 'user_tracking_admin_observe'
-	); 
+	'className' => 'user_tracking',
+	'objectName' => 'user_tracking_observe'
+	);
