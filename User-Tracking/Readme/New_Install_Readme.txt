@@ -1,5 +1,5 @@
 Contribution:  User Tracking
-Version:  V.1.5.7
+Version:  V.1.5.8
 
 Designed for: Zen Cart v1.5 Release
 Converted into Zen by: Dave Kennelly dave@open-operations.com
@@ -9,26 +9,27 @@ Thanks also to bislewl for the layout/concept of the autoinstaller code.
 Thanks to torvista for continued behind the scenes modifications and suggestions.
 Thanks to DrByte for allowing me (mc12345678) the opportunity to update a program and to push for such updates to come to fruition.
 Thanks to Nitroedge for pushing for and explaining the funtionality desired and its business reason.
+Thanks again to DrByte for revisiting the plugin and identifying opportunities to optimize the code for UT 1.5.8
 License: under the GPL - See http://www.gnu.org/licenses/licenses.html#GPL License for info.
 Forum Support:  Only given via the forums, please. http://www.zen-cart.com/forum/showthread.php?t=35081
 
 ========================================================
-NEW Installation Procedure:
+NEW/Upgrade Installation Procedure:
 
 
-1. The files in the contribution are arranged for Zen-Cart Version 1.5.x, just put them in the appropriate folder(s).
+1. The files in the contribution are arranged for Zen-Cart Version 1.5.x, just put all of them in the appropriate folder(s).
 
-1-B: The file structure is ready to drop in. Rename the admin folder to match your custom admin folder directory 
+1-B: The file structure is ready to drop in. Rename the admin folder to match your custom admin folder directory
      and upload the directory to the root of your store where that admin directory exists.
 
 2. Login into the admin area.
 
-3. File Modifications: 
-	3-1- to allow tracking pages loaded by visitors to the site for ZC pre 1.5.5, add or verify present the 
-	     following line to the end of /includes/templates/YOUR TEMPLATE/common/tpl_main_page.php.  If the file 
-	     does not exist in your template, then copy the common/tpl_main_page.php file from the template_default 
-	     into the folder named for your chosen template(s).  (This is the recommended location to store changes 
-	     to Zen Cart, using the template override folders makes future upgrades a little easier when changes 
+3. File Modifications:
+	3-1- to allow tracking pages loaded by visitors to the site for ZC pre 1.5.5, add or verify present the
+	     following line to the end of /includes/templates/YOUR TEMPLATE/common/tpl_main_page.php.  If the file
+	     does not exist in your template, then copy the common/tpl_main_page.php file from the template_default
+	     into the folder named for your chosen template(s).  (This is the recommended location to store changes
+	     to Zen Cart, using the template override folders makes future upgrades a little easier when changes
 	     come out or if it is desired to return to basic settings.)
 
 <?php $zco_notifier->notify('NOTIFY_FOOTER_END'); ?>
@@ -37,28 +38,28 @@ NEW Installation Procedure:
 
 <?php $zco_notifier->notify('NOTIFY_ADMIN_FOOTER_END'); ?>
 
-4. Go to admin of your store (ZenCart), in admin/configuration you should see user tracking config, by clicking on this 
+4. Go to admin of your store (ZenCart), in admin/configuration you should see user tracking config, by clicking on this
    you should see:
 
-User Tracking Configuration  
- 
+User Tracking Configuration
+
 Title Default Value
-User Tracking Visitors true   
-User Tracking (ADMIN) true   
-User Tracking (exclude this IP-Address) your IP   
-User Tracking (Session Limit) 50   
+User Tracking Visitors true
+User Tracking (ADMIN) true
+User Tracking (exclude this IP-Address) your IP
+User Tracking (Session Limit) 50
 User Tracking (Admin User Can Delete) true
 User Tracking (Purge this Number) 3
 User Tracking (Purge Units) Days
 User Tracking (Type of User Interaction to Record) 1
-User Tracking (your favorite WHOIS URL) http://www.dnsstuff.com/tools/whois.ch?ip=   
-User Tracking (Show Product Category when tracking product clicks) true   
+User Tracking (your favorite WHOIS URL) http://www.dnsstuff.com/tools/whois.ch?ip=
+User Tracking (Show Product Category when tracking product clicks) true
 User Tracking (User Tracking Filter Words) wp%20login%20php,%20action%20register:
 
 
 5- in admin/tools click on user tracking, you should see:
 
-User Tracking Start: 
+User Tracking Start:
 
 This tool allows for you to see the click patterns of the users through your site, organized by sessions. This data can be very valuable to those looking for ways/areas to improve your site by watching how customers actually use it. You can surf back and forth through the days by using the link below.
 
@@ -66,12 +67,28 @@ This tool allows for you to see the click patterns of the users through your sit
 7-1- first check again if all files are correctly located in the zen directories.
 7-2- Check for myDebugxxxx logs as described at: https://zen-cart.com/content.php?124-blank-page.  While the issue may not be a blank page
      the information gathered will help all the same.
-7-3- go to phpmyadmin, in table, configuration, delete all values related to user tracker, in table configuration-group, delete the table user tracking
+7-3- go to phpmyadmin, in table, configuration, delete all values related to user tracking, in table configuration-group, delete the table user tracking
 7-4- try install sql package with alternative method (if the first time was phpmyadmin, so this time do with zen admin add sql patch tools)
 7-5- check again if you have added one modification to both files, tpl.footer.php and footer.php
-7-6- No content displayed between the ZC admin menu and the typical footer image, verify that the changes of
+7-6- No content displayed between the ZC admin menu and the typical footer image after selecting tools->User Tracking?
+     Verify that the changes of
      https://github.com/zencart/zencart/commit/f891d240fe199af7510a9a4ae72024f66dd1f33c have been applied.
 7-7- still problem, take a look at forum (forum address at the top of this readme) and submit your question.
+
+
+Updated 07/24/2017 Version 1.5.8 mc12345678:
+1. Add an additional check to prevent an admin mydebug log being when the selection is made to display
+     filtered entries to hide entries that accessed an item on the list of filtered URIs.
+2. Incorporate optimizations provided by DrByte to improve the quality of the program.
+3. Joined admin/includes/functions/extra_functions/user_tracking.php into the function code for the catalog
+     side which meant that was able to incorporate into the catalog observer. Functions can be reached through
+     the use of $user_tracking_observe->zen_update_user_tracking() instead of just zen_update_user_tracking().
+4. Installer is expected to remove admin/includes/classes/class.user_tracking.php and
+     admin/includes/functions/extra_functions/user_tracking.php if it is present because these files are no
+     longer needed.
+5. Incorporated ip data collection code into the program to support compatibility between ZC versions where
+     for example the admin side doesn't have the same ip collection code.
+6. Cleaned up the look of the code to be consistent within an individual file.
 
 Updated 07/16/2017 Version 1.5.7 mc12345678:
 1. Correct the condition of an admin mydebug log being generated when the selection is made to display
@@ -99,7 +116,7 @@ Updated 07/02/2017 Version 1.5.5 mc12345678:
 
 Updated 06/10/2017 Version 1.5.4 mc12345678:
 1. Revised the installer to restore the expected operation. Bug had been introduced that prevented recognition of full installation.
-2. Incorporated an additional check/correction to support reperformance of the installation if an error was introduced during installation, 
+2. Incorporated an additional check/correction to support reperformance of the installation if an error was introduced during installation,
 helping to move forward from the above problem.
 3. Generalized the installer further to not depend on the file extension taking only 4 characters in length.
 4. Added install file to recognize this version.
@@ -121,9 +138,9 @@ helping to move forward from the above problem.
     even if the language is/was not translated yet.
 
 Updated 02/23/2017 Version 1.5.3 mc12345678:
-1. Implemented an installation/upgrade script instead of expecting users to try to successfully run the installation sql and to 
+1. Implemented an installation/upgrade script instead of expecting users to try to successfully run the installation sql and to
 remove the need of clearing the database of existing records when performing an update that does not modify the records table.
-2. Tightened security controls on the plugin by using focused database entry/record sanitization as well as output control to 
+2. Tightened security controls on the plugin by using focused database entry/record sanitization as well as output control to
 reduce the likelihood of script being executed by display of attempted url.  The captured session data only includes what is needed
 to support the desired information to be displayed.
 3. Updated code to be php 7.2 compliant based on reported deprecation of the each() function.
@@ -176,7 +193,7 @@ Files updated from 1.4.3 or 1.4.3a are:
 YOUR_ADMIN\user_tracking.php
 YOUR_ADMIN\user_tracking_config.php
 YOUR_ADMIN\includes\lanaguages\english\user_tracking.php
-includes\functions\extra_functions\user_tracking.php 
+includes\functions\extra_functions\user_tracking.php
 ========================================================
 Updated 11/24/2013 Version 1.4.3b
 1. Corrected a PHP warning that appears if there are no visits tracked for the date being reviewed.
@@ -189,14 +206,14 @@ For SQL statements: same instructions as applicable from the 11/10/2013 update.
 Files updated from 1.4.3 or 1.4.3a are:
 YOUR_ADMIN\user_tracking.php
 YOUR_ADMIN\includes\lanaguages\english\user_tracking.php
-includes\functions\extra_functions\user_tracking.php 
+includes\functions\extra_functions\user_tracking.php
 ========================================================
 Updated 11/14/2013 Version 1.4.3a
 1. Updated the version numbers of the instructions and the new_install_user_tracking.sql file. No other changes made in this version.
 ========================================================
 Updated 11/10/2013
 
-1. Added settings to Admin Config: 
+1. Added settings to Admin Config:
 1.1) User visiting the User tracking page ability to delete log entries.
 1.2) Ability to modify how much history to keep when purging/deleting entries using standard units of measure (hours, days, weeks, months (determined using 30 days)
 1.3) Added option of data to submit into log based on user forum input.
@@ -212,10 +229,10 @@ UPDATING INSTRUCTIONS:
 If updating from versions 1.4.0, 1.4.1, or 1.4.2
 Use the UPDATE_user_tracking.sql file first.
 
-Use previous update files and instructions to update from Zen Cart versions before 1.5.0 to at least User Tracking 1.4.2.  If updating from Version 1.4.2 of User Tracking, then need to 
+Use previous update files and instructions to update from Zen Cart versions before 1.5.0 to at least User Tracking 1.4.2.  If updating from Version 1.4.2 of User Tracking, then need to
 
 replace/update the following files:
-admin/user_tracking.php 
+admin/user_tracking.php
 admin/user_tracking_config.php
 admin/includes/extra_datafiles/user_tracking_database_tables.php
 admin/includes/languages/english/user_tracking.php
@@ -231,15 +248,15 @@ UPDATED 06/24/2013
 
 Identified that IE 7 implementation of OnChange for hide/show spiders did not work as expected.  Changed command to OnClick to be loaded for the radio button that would perform the next action.  (I.e., when spiders are hidden, clicking on Hide spiders will now do nothing, while clicking on Show Spiders will reload the page and show the data collected from a visit by a spider.)
 Added notification/observer events instead of simply using function calls.  The actions are still dependent on the footer(s) (requires only modifying one footer file for each of the store and the admin versus attempting to identify every possible header file/header event to observe.)  The observers are not required to be used (I.e., no change to the template files is required to continue use after updating the other files.)
-Incorporated text that was hard coded in the admin area into the language file.  
+Incorporated text that was hard coded in the admin area into the language file.
 Added display of Back to Today or Forward to Today if selected date is 2 or more days away from the date at the time the php code is run.
 Updated the Readme's to try to incorporate the history of previous updates, to minimize the number of files, and to capture the recent changes.
 
 UPDATING INSTRUCTIONS:
 
-Similar updating instructions as previous for updating from earlier Zen Cart version, if updating from Version 1.4.0 or 1.4.1 of User Tracking, then need to 
+Similar updating instructions as previous for updating from earlier Zen Cart version, if updating from Version 1.4.0 or 1.4.1 of User Tracking, then need to
 replace/update the following files:
-admin/user_tracking.php 
+admin/user_tracking.php
 admin/languages/english/user_tracking.php
 admin/languages/farsi/user_tracking.php
 
@@ -299,15 +316,15 @@ admin --> includes --> boxes --> extra_boxes --> user_tracking_tools_dhtml.php
 Enjoy....
 
 ========================================================
-assembled: reza:02/15/2007, 
+assembled: reza:02/15/2007,
 ----------------
 I have not changed any thing in this contribution. when I got problem after installation of user tracker version 1.3.6 on zen 1.3.7 and reading all comments of the forum, I found that most of the peoples got the same problems due to the separation of original package and upgraded package. for This I decided to put all together for zen 1.3.7.
 
-with thanks to Jeff and Woodymon for their supports in the forum. please address your donations to them. 
+with thanks to Jeff and Woodymon for their supports in the forum. please address your donations to them.
 
 ========================================================
 
-User Tracking v.1.3.6.2 (by JeffD) (UPDATE from v.1.3.6.1) 
+User Tracking v.1.3.6.2 (by JeffD) (UPDATE from v.1.3.6.1)
 Packaged by Woodymon 02-13-07
 
 Regards to changes in User Tracking 1.3.6.2 120406 (JeffD) (Dec. 04, 2006), since 1.3.6.2 was not a regular release I am only including in this attachment changes from previous version: two changed files php plus the SQL patch and the readme.txt. I am hoping JeffD will be back with a full fileset User Tracking update in the future.
@@ -374,14 +391,14 @@ user_tracking_config.php
 ----------------
 Updated: JTD:11/27/06 - jeffdripps@isegames.com
 
-Modified the user_tracking.sql by extending the size of the last_page_url field from 64 characters to 128 characters as this was previously too short and would often truncate URL link data. 
+Modified the user_tracking.sql by extending the size of the last_page_url field from 64 characters to 128 characters as this was previously too short and would often truncate URL link data.
 
 Truncated the session_id field from 128 characters to 32 characters as this was wasted space.
 
 Below is the commands necessary for the sql patch tool to alter the table to the new format described in the user_tracking.sql and described above:
 
-ALTER TABLE `user_tracking` CHANGE `session_id` `session_id` VARCHAR(32); 
-ALTER TABLE `user_tracking` CHANGE `last_page_url` `last_page_url` VARCHAR(128); 
+ALTER TABLE `user_tracking` CHANGE `session_id` `session_id` VARCHAR(32);
+ALTER TABLE `user_tracking` CHANGE `last_page_url` `last_page_url` VARCHAR(128);
 ALTER TABLE `user_tracking` ADD `customers_host_address` varchar(64) NOT NULL;
 
 
@@ -420,7 +437,7 @@ This module tracks your visitors hits on your site and displays pages visited by
 
 History:
 12/12/2004 - Initial Release
-07/28/2011 - Updated SQL for Box Links 
+07/28/2011 - Updated SQL for Box Links
 
 
 ========================================================
