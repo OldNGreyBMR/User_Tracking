@@ -53,31 +53,31 @@ class user_tracking extends base
         $wo_ip_address          = $this->ut_get_ip_address(); //(function_exists('zen_get_ip_address')) ? zen_get_ip_address() : $db->prepare_input(getenv('REMOTE_ADDR'));
         // JTD:05/15/06 - Query bug fixes for mySQL 5.x
 
-        if ($skip_tracking[$wo_ip_address] === 1) return;
+        if (isset($skip_tracking[$wo_ip_address]) && $skip_tracking[$wo_ip_address] === 1) return;
 
         if (IS_ADMIN_FLAG === true) {
             $wo_admin_id            = (int)$_SESSION['admin_id'];
             $admin                  = $db->Execute("select admin_name from " . TABLE_ADMIN . " where admin_id = " . (int)$_SESSION['admin_id']);
             $wo_full_name           = $admin->fields['admin_name'];
-            $customers_host_address = $_SESSION['admin_ip_address']; // JTD:11/27/06 - added host address support
+            $customers_host_address = isset($_SESSION['admin_ip_address']) ? $_SESSION['admin_ip_address'] : 'admin_ip_address'; // JTD:11/27/06 - added host address support
             $cust_id                = (int)$_SESSION['admin_id'];
         } else {
-            if ($_SESSION['customer_id']) {
+            if (!empty($_SESSION['customer_id'])) {
                 $customer           = $db->Execute("select customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " where customers_id = " . (int)$_SESSION['customer_id']);
                 $wo_full_name       = $customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname'];
             } else {
                 $wo_full_name       = 'Guest';
             }
-            $cust_id = (int)$_SESSION['customer_id'];
+            $cust_id = (!empty($_SESSION['customer_id'])) ? (int)$_SESSION['customer_id'] : 0;
             $customers_host_address = $_SESSION['customers_host_address']; // JTD:11/27/06 - added host address support
         }
         $wo_session_id              = zen_session_id();
         $wo_last_page_url           = getenv('REQUEST_URI');
-        $referer_url                = ($_SERVER['HTTP_REFERER'] == '') ? $wo_last_page_url : $_SERVER['HTTP_REFERER'];
+        $referer_url                = (empty($_SERVER['HTTP_REFERER'])) ? $wo_last_page_url : $_SERVER['HTTP_REFERER'];
         $referer_url                = $referer_url;
         $page_desc                  = '';
 
-        if (($_GET['products_id'] || $_GET['cPath'])) {
+        if ((!empty($_GET['products_id']) || !empty($_GET['cPath']))) {
             if ($_GET['cPath'] && ZEN_CONFIG_SHOW_USER_TRACKING_CATEGORY === 'true') {   // JTD:12/04/06 - Woody feature request
                 $cPath_array         = zen_parse_category_path($_GET['cPath']);
                 $cPath               = implode('_', $cPath_array);
