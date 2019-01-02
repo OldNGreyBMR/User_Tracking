@@ -162,7 +162,7 @@ if (SHOW_VERSION_UPDATE_IN_HEADER && !function_exists('plugin_version_check_for_
 // Respect the admin setting for version checking to prevent checking this if the store is disabled. (typically set because the version checker may generate warnings/errors.
 if ($zencart_com_plugin_id != 0 && SHOW_VERSION_UPDATE_IN_HEADER && (!defined($module_constant . '_PLUGIN_CHECK') || constant($module_constant . '_PLUGIN_CHECK'))) {
     $new_version_details = plugin_version_check_for_updates($zencart_com_plugin_id, $current_version);
-    if ($_GET['gID'] == $configuration_group_id && $new_version_details != FALSE) {
+    if ((empty($_GET['gID']) && empty($configuration_group_id) || isset($_GET['gID']) && $_GET['gID'] == $configuration_group_id) && $new_version_details != FALSE) {
         $messageStack->add("Version ".$new_version_details['latest_plugin_version']." of " . $new_version_details['title'] . ' is available at <a href="' . $new_version_details['link'] . '" target="_blank">[Details]</a>', 'caution');
     }
 }
