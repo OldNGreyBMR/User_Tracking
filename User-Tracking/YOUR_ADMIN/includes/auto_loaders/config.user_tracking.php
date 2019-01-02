@@ -22,6 +22,17 @@ if (!defined('IS_ADMIN_FLAG')) {
 	'autoType' => 'class',
 	'loadFile' => 'observers/class.user_tracking.php'
 	);
+ $autoLoadConfig[0][] = array(
+	'autoType' => 'class',
+	'loadFile' => 'table_block_ut.php',
+	'classPath'=> DIR_WS_CLASSES
+	);
+ $autoLoadConfig[0][] = array(
+	'autoType' => 'class',
+	'loadFile' => 'box_ut.php',
+	'classPath'=> DIR_WS_CLASSES
+	);
+
  $autoLoadConfig[199][] = array(
 	'autoType' => 'classInstantiate',
 	'className' => 'user_tracking',
