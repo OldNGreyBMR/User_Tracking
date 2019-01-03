@@ -56,11 +56,11 @@ class user_tracking extends base
         if (isset($skip_tracking[$wo_ip_address]) && $skip_tracking[$wo_ip_address] === 1) return;
 
         if (IS_ADMIN_FLAG === true) {
-            $wo_admin_id            = (int)$_SESSION['admin_id'];
-            $admin                  = $db->Execute("select admin_name from " . TABLE_ADMIN . " where admin_id = " . (int)$_SESSION['admin_id']);
-            $wo_full_name           = $admin->fields['admin_name'];
+            $wo_admin_id            = isset($_SESSION['admin_id']) ? (int)$_SESSION['admin_id'] : 0;
+            $admin                  = isset($_SESSION['admin_id']) ? $db->Execute("select admin_name from " . TABLE_ADMIN . " where admin_id = " . (int)$_SESSION['admin_id']) : null;
+            $wo_full_name           = isset($admin) ? $admin->fields['admin_name'] : 'Admin not logged in';
             $customers_host_address = isset($_SESSION['admin_ip_address']) ? $_SESSION['admin_ip_address'] : 'admin_ip_address'; // JTD:11/27/06 - added host address support
-            $cust_id                = (int)$_SESSION['admin_id'];
+            $cust_id                = isset($_SESSION['admin_id']) ? (int)$_SESSION['admin_id'] : 0;
         } else {
             if (!empty($_SESSION['customer_id'])) {
                 $customer           = $db->Execute("select customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " where customers_id = " . (int)$_SESSION['customer_id']);
@@ -78,7 +78,7 @@ class user_tracking extends base
         $page_desc                  = '';
 
         if ((!empty($_GET['products_id']) || !empty($_GET['cPath']))) {
-            if ($_GET['cPath'] && ZEN_CONFIG_SHOW_USER_TRACKING_CATEGORY === 'true') {   // JTD:12/04/06 - Woody feature request
+            if (!empty($_GET['cPath']) && $_GET['cPath'] && ZEN_CONFIG_SHOW_USER_TRACKING_CATEGORY === 'true') {   // JTD:12/04/06 - Woody feature request
                 $cPath_array         = zen_parse_category_path($_GET['cPath']);
                 $cPath               = implode('_', $cPath_array);
                 $current_category_id = array_pop($cPath_array);
@@ -88,7 +88,7 @@ class user_tracking extends base
                     $page_desc           = zen_get_categories_name_from_product((int)$current_category_id) . '&nbsp;-&nbsp;';
                 }
             }
-            if ($_GET['products_id']) {
+            if (!empty($_GET['products_id']) && $_GET['products_id']) {
                 $page_desc .= zen_get_products_name((int)$_GET['products_id']);
             }
         } else {
