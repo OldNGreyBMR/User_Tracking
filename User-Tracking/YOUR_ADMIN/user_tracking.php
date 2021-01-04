@@ -34,11 +34,7 @@
 
 // Start User Tracking - Spider Mod 1 of 7 Copied from admin\whos_online.php Zen Cart V1.5.0
   function zen_check_bot($checking) {
-    if (empty($checking)) {
-      return true;
-    } else {
-      return false;
-    }
+    return empty($checking);
   }
 
   $boxes = array();
