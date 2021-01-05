@@ -78,7 +78,7 @@ class user_tracking extends base
         $page_desc                  = '';
 
         if ((!empty($_GET['products_id']) || !empty($_GET['cPath']))) {
-            if (!empty($_GET['cPath']) && $_GET['cPath'] && ZEN_CONFIG_SHOW_USER_TRACKING_CATEGORY === 'true') {   // JTD:12/04/06 - Woody feature request
+            if (!empty($_GET['cPath']) && ZEN_CONFIG_SHOW_USER_TRACKING_CATEGORY === 'true') {   // JTD:12/04/06 - Woody feature request
                 $cPath_array         = zen_parse_category_path($_GET['cPath']);
                 $cPath               = implode('_', $cPath_array);
                 $current_category_id = array_pop($cPath_array);
@@ -88,7 +88,7 @@ class user_tracking extends base
                     $page_desc           = zen_get_categories_name_from_product((int)$current_category_id) . '&nbsp;-&nbsp;';
                 }
             }
-            if (!empty($_GET['products_id']) && $_GET['products_id']) {
+            if (!empty($_GET['products_id'])) {
                 $page_desc .= zen_get_products_name((int)$_GET['products_id']);
             }
         } else {
