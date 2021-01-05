@@ -40,9 +40,7 @@
   $boxes = array();
 
   // End User Tracking - Spider Mod 1 of 7
-  $date_day = array();
-  $date_month = array();
-  $date_year = array();
+  $date_arr = $date_year = $date_month = $date_day = array();
 
   $today = getdate();
   $today_month = (int)$today['mon'];
@@ -58,15 +56,15 @@
   $currentTime = time();
   $headerPosts = '';
 
-  $start_date_year_val = (int)$today_year;
-  $start_date_month_val = (int)$today_month;
-  $start_date_day_val = (int)$today['mday'];
+  $start_date['year'] = $start_date_year_val = (int)$today_year;
+  $start_date['month'] = $start_date_month_val = (int)$today_month;
+  $start_date['day'] = $start_date_day_val = (int)$today['mday'];
 
 
   if (isset($_POST['Report']) || (isset($_POST['action']) && $_POST['action'] == 'process')) {
-    $start_date_month_val = (int)$_POST['sdate_month'];
-    $start_date_day_val = (int)$_POST['sdate_day'];
-    $start_date_year_val = (int)$_POST['sdate_year'];
+    $start_date['month'] = (int)$_POST['sdate_month'];
+    $start_date['day'] = (int)$_POST['sdate_day'];
+    $start_date['year'] = (int)$_POST['sdate_year'];
   } elseif (isset($_POST['DateChange']) || isset($_POST['sessionSubmit']) || isset($_POST['sessionData'])) {
     if (empty($_POST['DateChange'])) {
       $_POST['DateChange'] = '';
@@ -92,16 +90,16 @@
         break;
     }
 
-    $start_date_year_val = (int)date("y", $new_time)+2000;
-    $start_date_month_val = (int)date("m", $new_time);
-    $start_date_day_val = (int)date("d", $new_time);
+    $start_date['year'] = (int)date("y", $new_time)+2000;
+    $start_date['month'] = (int)date("m", $new_time);
+    $start_date['day'] = (int)date("d", $new_time);
   }
 
-  $headerPosts .= zen_draw_hidden_field('sdate_month', (int)$start_date_month_val);
-  $headerPosts .= zen_draw_hidden_field('sdate_day', (int)$start_date_day_val);
-  $headerPosts .= zen_draw_hidden_field('sdate_year', (int)$start_date_year_val);
+  $headerPosts .= zen_draw_hidden_field('sdate_month', (int)$start_date['month']);
+  $headerPosts .= zen_draw_hidden_field('sdate_day', (int)$start_date['day']);
+  $headerPosts .= zen_draw_hidden_field('sdate_year', (int)$start_date['year']);
 
-  $hidden_time = mktime (0,0,0, $start_date_month_val,$start_date_day_val,$start_date_year_val/*,-1*/);
+  $hidden_time = mktime (0,0,0, $start_date['month'],$start_date['day'],$start_date['year']/*,-1*/);
   if (!isset($_POST['time'])) {
     $_POST['time'] = $hidden_time;
   }
@@ -201,11 +199,11 @@
 
 // End User Tracking - Spider Mod 2 of 7
   for ($i=1; $i<32; $i++) {
-    $date_day[] = array('id' => sprintf('%02d', $i), 'text' => sprintf('%02d', $i));
+    $date_arr['day'][] = $date_day[] = array('id' => sprintf('%02d', $i), 'text' => sprintf('%02d', $i));
   }
 
   for ($i=1; $i<13; $i++) {
-    $date_month[] = array('id' => sprintf('%02d', $i), 'text' => strftime('%B',mktime(0,0,0,$i,1,2000)));
+    $date_arr['month'][] = $date_month[] = array('id' => sprintf('%02d', $i), 'text' => strftime('%B',mktime(0,0,0,$i,1,2000)));
   }
 
   for ($i=1; $i <10; $i++) {
@@ -216,7 +214,7 @@
   $first_year = $today['year'];
 
   for ($i=$first_year; $i > $last_year; $i--) {
-    $date_year[] = array('id' => sprintf('%02d', $i), 'text' => sprintf('%02d', $i));
+    $date_arr['year'][] = $date_year[] = array('id' => sprintf('%02d', $i), 'text' => sprintf('%02d', $i));
   }
 
   $admin_range_delete = '';
@@ -476,9 +474,9 @@
   $col['header'][] = array('params'=>'class="main"',
                     'text' => ENTRY_START_DATE);
   $col['header'][] = array('params'=>'class="main"',
-                    'text' => '<span style="white-space: nowrap;">' . zen_draw_pull_down_menu('sdate_month', $date_month, $start_date_month_val) .
-                              zen_draw_pull_down_menu('sdate_day', $date_day, $start_date_day_val) .
-                              zen_draw_pull_down_menu('sdate_year', $date_year, $start_date_year_val) .
+                    'text' => '<span style="white-space: nowrap;">' . zen_draw_pull_down_menu('sdate_month', $date_arr['month']/*$date_month*/, $start_date['month']) .
+                              zen_draw_pull_down_menu('sdate_day', $date_arr['day']/*$date_day*/, $start_date['day']) .
+                              zen_draw_pull_down_menu('sdate_year', $date_arr['year']/*$date_year*/, $start_date['year']) .
                               (zen_not_null(ENTRY_START_DATE_TEXT)
                                 ? '<span class="inputRequirement">' . ENTRY_START_DATE_TEXT . '</span>'
                                 : '') . '</span>',
