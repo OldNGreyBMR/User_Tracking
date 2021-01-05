@@ -406,6 +406,17 @@
 <!-- header_eof //-->
 
 <?php
+if (!empty($_POST['sessionData'])) {
+  $sessionData = $_POST['sessionData'];
+?>
+<script>
+window.onload = function() {
+    var el = document.getElementById("<?php echo $sessionData; ?>");
+    el.scrollIntoView(true);
+}
+</script>
+<?php
+}
 
   $heading = array(array('text' => '&nbsp;'));
 
@@ -714,11 +725,11 @@ foreach ($user_tracking as $ut) {
 
 
       $col['center'][] = array( 'params' => 'class="dataTableHeadingContent' . ($local_filter_found ? ' lookupAttention' : '') . '" colspan="5"',
-                                'text' => zen_draw_form('user_tracking_stats', FILENAME_USER_TRACKING, '#' . $ut['session_id'], 'post', '') .
+                                'text' => zen_draw_form('user_tracking_stats', FILENAME_USER_TRACKING, '', 'post', '') .
                                 /*zen_draw_hidden_field('action', 'process') . */
                                 zen_draw_hidden_field('sessionData', $ut['session_id'], '') .
                                 $headerPosts .
-                                '<a name="' . $ut['session_id'] . '"></a>' .
+                                '<a id="' . $ut['session_id'] . '"></a>' .
                                 $customer_link .
                                 ",&nbsp;" .
                                 $ut['session_id'] .
