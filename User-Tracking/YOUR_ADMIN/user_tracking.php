@@ -817,7 +817,7 @@ foreach ($user_tracking as $ut) {
       } elseif ($session_expired) {
         $contents[] = array('align' => 'center', 'text' => 'session expired');
       } else {
-        $admin_user = zen_get_users($_SESSION['admin_id']);
+        $admin_user = zen_get_users(isset($_SESSION['admin_id']) ? $_SESSION['admin_id'] : 0);
         $contents[] = array('align' => 'center', 'text' => 'active admin group: ' . $admin_user[0]['profileName']);
       }
 
