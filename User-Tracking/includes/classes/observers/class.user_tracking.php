@@ -63,11 +63,10 @@ class user_tracking extends base
             $customers_host_address = isset($_SESSION['admin_ip_address']) ? $_SESSION['admin_ip_address'] : 'admin_ip_address'; // JTD:11/27/06 - added host address support
             $cust_id                = isset($_SESSION['admin_id']) ? (int)$_SESSION['admin_id'] : 0;
         } else {
+            $wo_full_name           = 'Guest';
             if (!empty($_SESSION['customer_id'])) {
                 $customer           = $db->Execute("select customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " where customers_id = " . (int)$_SESSION['customer_id']);
                 $wo_full_name       = (!$customer->EOF) ? $customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname'] : '';
-            } else {
-                $wo_full_name       = 'Guest';
             }
             $cust_id = (!empty($_SESSION['customer_id'])) ? (int)$_SESSION['customer_id'] : 0;
             $customers_host_address = $_SESSION['customers_host_address']; // JTD:11/27/06 - added host address support
