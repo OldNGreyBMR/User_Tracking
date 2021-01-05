@@ -801,7 +801,7 @@ foreach ($user_tracking as $ut) {
 //echo '<br />session_id: ' . $ut['value']['session_id'] . '<br />';
       $contents = array();
 
-      if (isset($_SESSION['cart']) && is_object($_SESSION['cart']) /*&& sizeof($_SESSION['cart']) > 0*/) {
+      if (isset($_SESSION['cart']) && is_object($_SESSION['cart'])) {
         $products = $_SESSION['cart']->get_products();
         for ($i = 0, $n = count($products); $i < $n; $i++) {
           $contents[] = array('text' => $products[$i]['quantity'] . ' x ' . '<a href="' . zen_href_link(FILENAME_CATEGORIES, 'cPath=' . zen_get_product_path($products[$i]['id']) . '&pID=' . $products[$i]['id']) . '">' . $products[$i]['name'] . '</a>');
