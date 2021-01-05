@@ -975,7 +975,7 @@ foreach ($user_tracking as $ut) {
           $du = $ut['page_desc'][$key];
           $column = array();
 
-          $column[] = array('params' => 'class="dataTableContent"',
+          $column[] = array('params' => 'class="dataTableContent" nowrap',
                             'align' => 'right" valign="top',
                             'text' => date('H:i:s', $key) . ':'
                            );
