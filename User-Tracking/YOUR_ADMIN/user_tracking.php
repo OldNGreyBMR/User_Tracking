@@ -409,6 +409,9 @@
 
   $heading = array(array('text' => '&nbsp;'));
 
+  $HTMLparams = array();
+  $HTMLparams['bgcolor'] = 'bgcolor="ffffff"';
+
   $emptybgheading = array(0=>array(0=>array(0=>array('params'=> 'class="UTBoxHeading"',
                           'text' => '&nbsp;'), 'params' => 'class="UTBoxHeading"', 'text' => '&nbsp;')));
   $emptyheading = array(0=>array(0=>array(0=>array(
@@ -428,7 +431,7 @@
   $boxes['body']->table_width = '100%';
   $boxes['body']->table_cellpadding = '4';
   $boxes['body']->table_cellspacing = '4';
-  $boxes['body']->table_parameters = 'bgcolor="FFFFFF" align="center"';
+  $boxes['body']->table_parameters = $HTMLparams['bgcolor'] . ' align="center"';
 
   $col['body'] = array();
   $row['body'] = array();
@@ -438,7 +441,7 @@
   $boxes['body2']->table_width = '100%';
   $boxes['body2']->table_cellpadding = '0';
   $boxes['body2']->table_cellspacing = '0';
-  $boxes['body2']->table_parameters = 'bgcolor="FFFFFF"';
+  $boxes['body2']->table_parameters = $HTMLparams['bgcolor'];
 
   // Initialize body2 table
   $col['body2'] = array();
@@ -448,7 +451,7 @@
   $boxes['body3']->table_width = '100%';
   $boxes['body3']->table_cellpadding = '0';
   $boxes['body3']->table_cellspacing = '0';
-  $boxes['body3']->table_parameters = 'bgcolor="FFFFFF"';
+  $boxes['body3']->table_parameters = $HTMLparams['bgcolor'];
 
   // Initialize body3 table
   $col['body3'] = array();
@@ -456,7 +459,7 @@
 
   $boxes['center'] = new box_ut;
   $boxes['center']->table_cellpadding = '0';
-  $boxes['center']->table_parameters = 'bgcolor="FFFFFF"';
+  $boxes['center']->table_parameters = $HTMLparams['bgcolor'];
   $boxes['center']->table_width = "95%";
 
   $col['center'] = array();
@@ -509,7 +512,7 @@
                   );
 
   $row['header'] = array();
-  $row['header'][] = array_merge($col['header'], array('params' => 'bgcolor="ffffff"')); // Add a row of data to the table.
+  $row['header'][] = array_merge($col['header'], array('params' => $HTMLparams['bgcolor'])); // Add a row of data to the table.
 
   // Create a specific box for the header.
   // Create a table of boxes.
@@ -521,11 +524,11 @@
   // initialize the body columns and rows.
 
 
-          $col['body2'][] = array('params' => 'bgcolor="FFFFFF" class="UTBox"',
+          $col['body2'][] = array('params' => $HTMLparams['bgcolor'] . ' class="UTBox"',
                                   'form' => zen_draw_form('user_tracking_stats', FILENAME_USER_TRACKING, '', 'post', ''),
                                   'text' => zen_draw_hidden_field('action', 'process') . zen_draw_hidden_field('time', $hidden_time, '') . /*'<span class="UTBox">' .*/ $boxes['table']['header'] /*. '</span>'*/
                                  );
-          $row['body2'][] = array_merge($col['body2'], array('params' => 'bgcolor="ffffff"'));
+          $row['body2'][] = array_merge($col['body2'], array('params' => $HTMLparams['bgcolor']));
           $col['body2'] = array();
 
 //  echo zen_draw_form('user_tracking_stats', FILENAME_USER_TRACKING, ''/*'onsubmit="return check_form(user_tracking_stats);"'*/, 'post', ''/*'onsubmit="return check_form(user_tracking_stats);"'*/) . zen_draw_hidden_field('action', 'process');
@@ -536,7 +539,7 @@
                                  );
 
 // Header to results of deletion / Keep "above"
-          $row['body3'][] = array_merge($col['body3'], array('params'=>'bgcolor="ffffff" test-data="t2"'));
+          $row['body3'][] = array_merge($col['body3'], array('params' => $HTMLparams['bgcolor'] . ' test-data="t2"'));
 
           $col['body3'] = array(); // Clear $col['body3'] for new column data.
 
@@ -546,7 +549,7 @@
                                   'text' => EXPLANATION,
                                  );
 
-          $row['body3'][] = array_merge($col['body3'], array('params' => 'bgcolor="ffffff"'));
+          $row['body3'][] = array_merge($col['body3'], array('params' => $HTMLparams['bgcolor']));
 
           $col['body3'] = array(); // Clear $col['body3'] for new column data.
 
@@ -556,7 +559,7 @@
                                     $navLinks . $headerPosts,
                                  );
 
-          $row['body3'][] = array_merge($col['body3'], array('params' => 'bgcolor="ffffff"'));
+          $row['body3'][] = array_merge($col['body3'], array('params' => $HTMLparams['bgcolor']));
 
           $col['body3'] = array(); // Clear $col['body3'] for new column data.
 
@@ -565,7 +568,7 @@
                                   'text' => $admin_range_delete,
                                  );
 
-          $row['body3'][] = array_merge($col['body3'], array('params' => 'bgcolor="ffffff"'));
+          $row['body3'][] = array_merge($col['body3'], array('params' => $HTMLparams['bgcolor']));
 
           $col['body3'] = array(); // Clear $col['body3'] for new column data.
 
@@ -574,7 +577,7 @@
                                   'text' => $admin_ip_delete,
                                  );
 
-          $row['body3'][] = array_merge($col['body3'], array('params'=>'bgcolor="ffffff"'));
+          $row['body3'][] = array_merge($col['body3'], array('params' => $HTMLparams['bgcolor']));
 
           $col['body3'] = array(); // Clear $col['body3'] for new column data.
 
@@ -584,7 +587,7 @@
           $col['body3'][] = array('params' => 'class="smallText" colspan="7"',
                                   'text' => sprintf(TEXT_NUMBER_OF_CUSTOMERS, $results) . sprintf(TEXT_NUMBER_OF_USERS, $num_sessions) . sprintf(TEXT_NUMBER_OF_SPIDERS, $spiderCount),
                                );
-          $row['body3'][] = array_merge($col['body3'], array('params'=>'bgcolor="ffffff"'));
+          $row['body3'][] = array_merge($col['body3'], array('params' => $HTMLparams['bgcolor']));
 
           $col['body3'] = array(); // Clear $col['body3'] for new column data.
 
@@ -671,7 +674,7 @@ foreach ($user_tracking as $ut) {
       $col['time'][] = array('params' => 'class="dataTableContent" colspan="2" valign="top"',
                         'text' => sprintf("%02d:%02d:%02d",$dit/3600, ($dit % 3600)/60, $dit % 60)
                        );
-      $row['time'][] = array_merge($col['time'], array('params'=>'bgcolor="ffffff"'));
+      $row['time'][] = array_merge($col['time'], array('params' => $HTMLparams['bgcolor']));
 
       $col['time'] = array();
 
@@ -689,7 +692,7 @@ foreach ($user_tracking as $ut) {
       $col['time'][] = array('params' => 'class="dataTableContent" colspan="2" valign="top"',
                         'text' => sprintf("%02d:%02d:%02d",$dtt/3600, ($dtt % 3600)/60, $dtt % 60)
                        );
-      $row['time'][] = array_merge($col['time'], array('params'=>'bgcolor="ffffff"'));
+      $row['time'][] = array_merge($col['time'], array('params' => $HTMLparams['bgcolor']));
 
       //$heading = array(array('text' => '&nbsp;'));
 
@@ -864,7 +867,7 @@ foreach ($user_tracking as $ut) {
         //echo $boxes['table']['time_table'];
       ?><!--</span></td>
                           </tr>-->
-                          <?php $row['center'][] = array_merge($col['center'], array('params'=>'bgcolor="ffffff"'));
+                          <?php $row['center'][] = array_merge($col['center'], array('params' => $HTMLparams['bgcolor']));
 
                           $col['center'] = array();
 
@@ -885,7 +888,7 @@ foreach ($user_tracking as $ut) {
         <td class="dataTableContent" valign="top"><?php echo zen_image(DIR_WS_FLAGS . $flag . '.gif', $cn); ?>&nbsp;<?php echo $cn; ?></td>
        </tr>-->
        <?php
-       $row['center'][] = array_merge($col['center'], array('params'=>'bgcolor="ffffff"'));
+       $row['center'][] = array_merge($col['center'], array('params' => $HTMLparams['bgcolor']));
 
        $col['center'] = array();
 
@@ -897,7 +900,7 @@ foreach ($user_tracking as $ut) {
                                 'text' => '<a href="' . USER_TRACKING_WHOIS_URL . $ut['ip_address'] . '" target="_new">' . $ut['ip_address'] . '</a>',
                                );
 
-       $row['center'][] = array_merge($col['center'], array('params'=>'bgcolor="ffffff"'));
+       $row['center'][] = array_merge($col['center'], array('params' => $HTMLparams['bgcolor']));
 
        $col['center'] = array();
 
@@ -909,7 +912,7 @@ foreach ($user_tracking as $ut) {
                                 'text' => (strlen($ut['customers_host_address']) == 0 ? '&nbsp;': $ut['customers_host_address']),
                                );
 
-       $row['center'][] = array_merge($col['center'], array('params'=>'bgcolor="ffffff"'));
+       $row['center'][] = array_merge($col['center'], array('params' => $HTMLparams['bgcolor']));
 
        $col['center'] = array();
 
@@ -936,7 +939,7 @@ foreach ($user_tracking as $ut) {
                                 'text' => '<a href="' . htmlspecialchars($ut['referer_url']) . '" target="_new">' . htmlspecialchars($ut['referer_url']) . '</a>&nbsp;',
                                );
 
-       $row['center'][] = array_merge($col['center'], array('params'=>'bgcolor="ffffff"'));
+       $row['center'][] = array_merge($col['center'], array('params' => $HTMLparams['bgcolor']));
 
        $col['center'] = array();
 
@@ -979,7 +982,7 @@ foreach ($user_tracking as $ut) {
             <td class="dataTableContent" width="100%" align="left"><a href="<?php echo $pu; ?>" target="_new"><?php echo chunk_split($pu,40,"<br>"); ?></a></td>
           </tr> -->
 <?php
-          $row['visited'][] = array_merge($column, array('params'=>'bgcolor="ffffff"'));
+          $row['visited'][] = array_merge($column, array('params' => $HTMLparams['bgcolor']));
         }
       }
       $boxes['visited'] = new box_ut;
@@ -992,7 +995,7 @@ foreach ($user_tracking as $ut) {
                                 'text' => $boxes['visited']->infoBox($emptybgheading, $row['visited']),
                                );
 
-       $row['center'][] = array_merge($col['center'], array('params'=>'bgcolor="ffffff"'));
+       $row['center'][] = array_merge($col['center'], array('params' => $HTMLparams['bgcolor']));
 
        $col['center'] = array();
 
@@ -1021,7 +1024,7 @@ foreach ($user_tracking as $ut) {
                                   'text' => $boxes['center']->infoBox($emptybgheading, $row['center']),
                                  );
 
-          $row['body3'][] = array_merge($col['body3'], array('params' => 'bgcolor="ffffff"'));
+          $row['body3'][] = array_merge($col['body3'], array('params' => $HTMLparams['bgcolor']));
 
           $col['body3'] = array();
 
@@ -1032,7 +1035,7 @@ foreach ($user_tracking as $ut) {
                            sprintf(TEXT_NUMBER_OF_SPIDERS, $spiderCount)
                           );
 
-      $row['body3'][] = array_merge($col['body3'], array('params' => 'bgcolor="ffffff"'));
+      $row['body3'][] = array_merge($col['body3'], array('params' => $HTMLparams['bgcolor']));
       $col['body3'] = array();
 
 
@@ -1086,7 +1089,7 @@ foreach ($user_tracking as $ut) {
                          'text' => '<b>' . TEXT_SELECT_VIEW .': </b>' . $navLinks . $headerPosts,
                         );
 
-  $row['body'][] = array_merge($col['body'], array('params' => 'bgcolor="ffffff"'));
+  $row['body'][] = array_merge($col['body'], array('params' => $HTMLparams['bgcolor']));
 
   $col['body'] = array();
 
