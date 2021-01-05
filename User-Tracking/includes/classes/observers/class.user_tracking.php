@@ -58,14 +58,14 @@ class user_tracking extends base
 
         if (IS_ADMIN_FLAG === true) {
             $wo_admin_id            = isset($_SESSION['admin_id']) ? (int)$_SESSION['admin_id'] : 0;
-            $admin                  = isset($_SESSION['admin_id']) ? $db->Execute("select admin_name from " . TABLE_ADMIN . " where admin_id = " . (int)$_SESSION['admin_id']) : null;
+            $admin                  = !empty($wo_admin_id) ? $db->Execute("select admin_name from " . TABLE_ADMIN . " where admin_id = " . (int)$wo_admin_id) : null;
             $wo_full_name           = isset($admin) ? $admin->fields['admin_name'] : 'Admin not logged in';
             $customers_host_address = isset($_SESSION['admin_ip_address']) ? $_SESSION['admin_ip_address'] : 'admin_ip_address'; // JTD:11/27/06 - added host address support
             $cust_id                = isset($_SESSION['admin_id']) ? (int)$_SESSION['admin_id'] : 0;
         } else {
             if (!empty($_SESSION['customer_id'])) {
                 $customer           = $db->Execute("select customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " where customers_id = " . (int)$_SESSION['customer_id']);
-                $wo_full_name       = $customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname'];
+                $wo_full_name       = (!$customer->EOF) ? $customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname'] : '';
             } else {
                 $wo_full_name       = 'Guest';
             }
@@ -96,7 +96,7 @@ class user_tracking extends base
             $page_desc = defined('HEADING_TITLE') ? HEADING_TITLE : (IS_ADMIN_FLAG !== true ? NAVBAR_TITLE : '');
             if (IS_ADMIN_FLAG === true && (empty($page_desc) || !defined('HEADING_TITLE'))) {
                 $page_desc_values = $db->Execute("select configuration_group_title from " . TABLE_CONFIGURATION_GROUP . " where configuration_group_id = " . (int)$_GET['gID']);
-                $page_desc        = $page_desc_values->fields['configuration_group_title'];
+                $page_desc        = (!$page_desc_values->EOF) ? $page_desc_values->fields['configuration_group_title'] : '';
             }
         }
         $current_time = time();
