@@ -132,53 +132,52 @@ class user_tracking extends base
     {
         if (function_exists('zen_get_ip_address')) {
             return zen_get_ip_address();
-        } else {
-            /**
-             * Code taken from ZC 1.5.5 function zen_get_ip_address from includes/functions/functions_general.php
-             */
-            $ip = '';
-            /**
-             * resolve any proxies
-             */
-            if (isset($_SERVER)) {
-                if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-                    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-                } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
-                    $ip = $_SERVER['HTTP_CLIENT_IP'];
-                } elseif (isset($_SERVER['HTTP_X_FORWARDED'])) {
-                    $ip = $_SERVER['HTTP_X_FORWARDED'];
-                } elseif (isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP'])) {
-                    $ip = $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];
-                } elseif (isset($_SERVER['HTTP_FORWARDED_FOR'])) {
-                    $ip = $_SERVER['HTTP_FORWARDED_FOR'];
-                } elseif (isset($_SERVER['HTTP_FORWARDED'])) {
-                    $ip = $_SERVER['HTTP_FORWARDED'];
-                } else {
-                    $ip = $_SERVER['REMOTE_ADDR'];
-                }
-            }
-            if (trim($ip) == '') {
-                if (getenv('HTTP_X_FORWARDED_FOR')) {
-                    $ip = getenv('HTTP_X_FORWARDED_FOR');
-                } elseif (getenv('HTTP_CLIENT_IP')) {
-                    $ip = getenv('HTTP_CLIENT_IP');
-                } else {
-                    $ip = getenv('REMOTE_ADDR');
-                }
-            }
-
-            /**
-             * sanitize for validity as an IPv4 or IPv6 address
-             */
-            $ip = preg_replace('~[^a-fA-F0-9.:%/,]~', '', $ip);
-
-            /**
-             *  if it's still blank, set to a single dot
-             */
-            if (trim($ip) == '') $ip = '.';
-
-            return $ip;
         }
+        /**
+         * Code taken from ZC 1.5.5 function zen_get_ip_address from includes/functions/functions_general.php
+         */
+        $ip = '';
+        /**
+         * resolve any proxies
+         */
+        if (isset($_SERVER)) {
+            if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
+                $ip = $_SERVER['HTTP_CLIENT_IP'];
+            } elseif (isset($_SERVER['HTTP_X_FORWARDED'])) {
+                $ip = $_SERVER['HTTP_X_FORWARDED'];
+            } elseif (isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP'])) {
+                $ip = $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];
+            } elseif (isset($_SERVER['HTTP_FORWARDED_FOR'])) {
+                $ip = $_SERVER['HTTP_FORWARDED_FOR'];
+            } elseif (isset($_SERVER['HTTP_FORWARDED'])) {
+                $ip = $_SERVER['HTTP_FORWARDED'];
+            } else {
+                $ip = $_SERVER['REMOTE_ADDR'];
+            }
+        }
+        if (trim($ip) == '') {
+            if (getenv('HTTP_X_FORWARDED_FOR')) {
+                $ip = getenv('HTTP_X_FORWARDED_FOR');
+            } elseif (getenv('HTTP_CLIENT_IP')) {
+                $ip = getenv('HTTP_CLIENT_IP');
+            } else {
+                $ip = getenv('REMOTE_ADDR');
+            }
+        }
+
+        /**
+         * sanitize for validity as an IPv4 or IPv6 address
+         */
+        $ip = preg_replace('~[^a-fA-F0-9.:%/,]~', '', $ip);
+
+        /**
+         *  if it's still blank, set to a single dot
+         */
+        if (trim($ip) == '') $ip = '.';
+
+        return $ip;
     }
 
     function removeStarting($currentTime = NULL) {
