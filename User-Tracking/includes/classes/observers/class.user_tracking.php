@@ -47,7 +47,8 @@ class user_tracking extends base
     {
         global $db;
 
-        foreach (explode(",", CONFIG_USER_TRACKING_EXCLUDED) as $skip_ip) {
+        $exclude_array = explode(",", CONFIG_USER_TRACKING_EXCLUDED);
+        foreach ($exclude_array as $skip_ip) {
             $skip_tracking[trim($skip_ip)] = 1;
         }
         $wo_ip_address          = $this->ut_get_ip_address(); //(function_exists('zen_get_ip_address')) ? zen_get_ip_address() : $db->prepare_input(getenv('REMOTE_ADDR'));
