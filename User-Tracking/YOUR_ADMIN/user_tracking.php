@@ -805,6 +805,7 @@ foreach ($user_tracking as $ut) {
         $products = $_SESSION['cart']->get_products();
         for ($i = 0, $n = count($products); $i < $n; $i++) {
           $contents[] = array('text' => $products[$i]['quantity'] . ' x ' . '<a href="' . zen_href_link(FILENAME_CATEGORIES, 'cPath=' . zen_get_product_path($products[$i]['id']) . '&pID=' . $products[$i]['id']) . '">' . $products[$i]['name'] . '</a>');
+        // Need to add attributes as potential data to display.
 // cPath=23&pID=74
         }
 
