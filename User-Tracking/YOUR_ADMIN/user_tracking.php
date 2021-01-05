@@ -239,7 +239,8 @@
     {
 // JTD:10/27/05
 //    $db->Execute("DELETE FROM " . TABLE_USER_TRACKING . " where time_last_click < '"  . (time() - ($purge * 3600))."'");
-    $db->Execute('DELETE FROM ' . TABLE_USER_TRACKING . " WHERE time_last_click < '" . ($currentTime - (CONFIG_USER_TRACKING_PURGE_NUMBER * 60 * CONFIG_USER_TRACKING_PURGE_UNITS))."'"); //v1.4.3 2 of 15
+//    $db->Execute('DELETE FROM ' . TABLE_USER_TRACKING . " WHERE time_last_click < '" . ($currentTime - (CONFIG_USER_TRACKING_PURGE_NUMBER * 60 * CONFIG_USER_TRACKING_PURGE_UNITS))."'"); //v1.4.3 2 of 15
+    $user_tracking_observe->removeStarting($currentTime);
 
     $deleted_span_text = '<p><font color="red">' . TEXT_HAS_BEEN_PURGED . '</font></p>';
   }

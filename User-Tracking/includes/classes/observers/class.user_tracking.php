@@ -181,4 +181,14 @@ class user_tracking extends base
         }
     }
 
+    function removeStarting($currentTime = NULL) {
+        global $db;
+
+        if (is_null($currentTime)) {
+            $currentTime = time();
+        }
+        if (!defined('CONFIG_USER_TRACKING_PURGE_NUMBER') || !defined('CONFIG_USER_TRACKING_PURGE_UNITS')) return;
+
+        $db->Execute('DELETE FROM ' . TABLE_USER_TRACKING . " WHERE time_last_click < '" . ($currentTime - (CONFIG_USER_TRACKING_PURGE_NUMBER * 60 * CONFIG_USER_TRACKING_PURGE_UNITS))."'"); //v1.4.3 2 of 15
+    }
 }
