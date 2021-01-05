@@ -46,10 +46,11 @@
   $today_month = (int)$today['mon'];
   $today_year = (int)$today['year'];
 
-  if ($today_month == 0)
+  if ($today_month <= 0)
   {
-    $today_month = 12;
-    $today_year = $today_year-1;
+    $multi_year = abs((int)($today_month/12));
+    $today_month += 12 * (1 + $multi_year);
+    $today_year = $today_year - (1 + $multi_year);
   }
 
 
