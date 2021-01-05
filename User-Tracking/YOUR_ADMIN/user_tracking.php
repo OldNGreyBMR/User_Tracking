@@ -985,7 +985,7 @@ foreach ($user_tracking as $ut) {
                            );
           $column[] = array('params' => 'width="100%"',
                             'align' => 'left',
-                            'text' => '<a href="' . $pu . '" target="_new">' . chunk_split($pu,40,"<br />") . '</a>'
+                            'text' => '<a href="' . $pu . '" target="_new">' . chunk_split($pu,100,"<br />") . '</a>'
                            );
     ?>
         <!--  <tr bgcolor="ffffff">
