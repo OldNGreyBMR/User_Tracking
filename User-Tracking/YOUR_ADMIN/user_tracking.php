@@ -828,6 +828,7 @@ foreach ($user_tracking as $ut) {
           session_decode($session_data_currency);
         }
       }
+
 //echo '<br />session data after: ' . print_r($_SESSION, true) . '<br />';
 //echo '<br />session_id: ' . $ut['value']['session_id'] . '<br />';
       $contents = array();
