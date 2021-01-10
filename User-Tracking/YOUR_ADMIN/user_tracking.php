@@ -620,6 +620,30 @@ window.onload = function() {
     //End of v1.4.3 14 of 15
 
   if (!empty($user_tracking) && $results) {
+    $old_session_process = true; // Process the old way unless the new way is available.
+    if (class_exists('WhosOnline')) {
+      $wo = new WhosOnline();
+      $exclude_admin_wo = (defined('ADMIN_CONFIG_USER_TRACKING') ? ADMIN_CONFIG_USER_TRACKING === 'false': false); // Value to exclude display of admin users.
+      $cart_data = $wo->retrieve('time_last_click-desc' /* '' $selectedView = ''*/, '' /* $ut['session_id'] *//*''*/ /* $sessionToInspect = '' */, !$displaySpider, $exclude_admin_wo); //$selectedView = '', $sessionToInspect = '', $exclude_spiders = false, $exclude_admins = true)
+
+      // Iterate the results of the query
+      foreach ($cart_data as $key => $value) {
+        if ($value['is_a_bot'] && !$displaySpider) continue; // Don't evaluate data if not tracking bots.
+        if (isset($value['cart']['cartObject'])) continue; // If the above retrieve worked for all sessions then don't need to retrieve this data.
+
+        // Call the above retrieve on the current $key and set the 'cart' variable to that result.
+        $new_data = $wo->retrieve('', $key, !$displaySpider, $exclude_admin_wo);
+
+        if (isset($cart_data[$key]['cart'])) {
+          $cart_data[$key]['cart'] = array_merge($cart_data[$key]['cart'], $new_data[$key]['cart']);
+        } else {
+          $cart_data[$key]['cart'] = $new_data[$key]['cart'];
+        }
+        unset($new_data);
+      }
+      $old_session_process = false; // Disable processing the old way.
+    }
+
   /* Begin v1.4.3b  (Moved statement to within test) */
      // reset($user_tracking);
   /* End v1.4.3b */
@@ -773,8 +797,15 @@ foreach ($user_tracking as $ut) {
 //    $_SESSION['cart'] = array();
 
       $orig_session = $_SESSION;
+      $adminSession = session_encode();
+      if ($old_session_process !== true) {
+        if (isset($cart_data[$ut['session_id']]['cart']['cartObject']) && is_object($cart_data[$ut['session_id']]['cart']['cartObject'])) {
+          $_SESSION['cart'] = $cart_data[$ut['session_id']]['cart']['cartObject'];
+          $_SESSION['currency'] = $cart_data[$ut['session_id']]['cart']['currency_code'];
+        }
+      }
 //echo '<br />session data before: ' . print_r($_SESSION, true) . '<br />';
-      if ($length = strlen($session_data)) {
+      if ($old_session_process === true && $length = strlen($session_data)) {
       //unset($_SESSION['admin_id']);
 
         $start_cart = strpos($session_data, 'cart|O');
@@ -824,6 +855,13 @@ foreach ($user_tracking as $ut) {
 
       //zen_session_start();
       $_SESSION = $orig_session;
+      foreach($_SESSION as $key => $value) {
+          if (!isset($orig_session[$key])) {
+              unset($_SESSION[$key]);
+          }
+      }
+      session_decode($adminSession);
+      unset($adminSession, $orig_session);
 
       // $heading = array(array('text' => '&nbsp;'));
 
