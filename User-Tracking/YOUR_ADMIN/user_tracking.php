@@ -620,15 +620,17 @@ window.onload = function() {
     //End of v1.4.3 14 of 15
 
   if (!empty($user_tracking) && $results) {
+    $admin_ip_array = preg_split('/[\s,]/', zen_db_input(EXCLUDE_ADMIN_IP_FOR_MAINTENANCE) . ',' . zen_db_input($_SERVER['REMOTE_ADDR']));
+    $exclude_admin_wo = (defined('ADMIN_CONFIG_USER_TRACKING') ? ADMIN_CONFIG_USER_TRACKING === 'false': false); // Value to exclude display of admin users.
     $old_session_process = true; // Process the old way unless the new way is available.
     if (class_exists('WhosOnline')) {
       $wo = new WhosOnline();
-      $exclude_admin_wo = (defined('ADMIN_CONFIG_USER_TRACKING') ? ADMIN_CONFIG_USER_TRACKING === 'false': false); // Value to exclude display of admin users.
       $cart_data = $wo->retrieve('time_last_click-desc' /* '' $selectedView = ''*/, '' /* $ut['session_id'] *//*''*/ /* $sessionToInspect = '' */, !$displaySpider, $exclude_admin_wo); //$selectedView = '', $sessionToInspect = '', $exclude_spiders = false, $exclude_admins = true)
 
       // Iterate the results of the query
       foreach ($cart_data as $key => $value) {
         if ($value['is_a_bot'] && !$displaySpider) continue; // Don't evaluate data if not tracking bots.
+        if ($exclude_admin_wo && $admin_ip_array !== false && in_array($value['ip_address'], $admin_ip_array)) continue; // Exclude individual from display if an admin IP address and not to be shown.
         if (isset($value['cart']['cartObject'])) continue; // If the above retrieve worked for all sessions then don't need to retrieve this data.
 
         // Call the above retrieve on the current $key and set the 'cart' variable to that result.
@@ -648,6 +650,9 @@ window.onload = function() {
      // reset($user_tracking);
   /* End v1.4.3b */
 foreach ($user_tracking as $ut) {
+    if ($exclude_admin_wo && $admin_ip_array !== false && in_array($ut['ip_address'], $admin_ip_array)) {
+      continue; // Do not process anything further for this record if not supposed to monitor admin info.
+    }
     if ($listed++ >= CONFIG_USER_TRACKING_SESSION_LIMIT) {
       break;
     }
