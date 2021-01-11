@@ -19,10 +19,12 @@ class user_tracking extends base
 
     function update(&$callingClass, $notifier, $paramsArray)
     {
-        if (!defined('ZEN_CONFIG_USER_TRACKING') || ZEN_CONFIG_USER_TRACKING !== 'true') return;
+        if (!defined('ZEN_CONFIG_USER_TRACKING')) return; // Prevent log generation during install.
 
         if ($notifier == 'NOTIFY_FOOTER_END') {
             global $session_started, $spider_flag;
+
+            if (ZEN_CONFIG_USER_TRACKING === 'false') return;
 
             if (CONFIG_USER_TRACKING_TRACK_TYPE_RECORD === '1') {
                 $this->zen_update_user_tracking();
