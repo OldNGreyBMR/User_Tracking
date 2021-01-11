@@ -70,15 +70,16 @@ if (is_dir($module_installer_directory)) {
     if (count($installers) == 0) {
       break;
     }
+    natsort($installers);
     $installers = array_values($installers);
   }
 
   // If there are still installer files to process, then do so.
-  if (count($installers) > 0) {
-      $newest_version = $installers[0];
+  if (($num_installers = count($installers)) > 0) {
+      $newest_version = $installers[$num_installers - 1];
       $newest_version = substr($newest_version, 0, -1 * $file_extension_len);
 
-      sort($installers);
+//      sort($installers);
       if (version_compare($newest_version, $current_version) > 0) {
           foreach ($installers as $installer) {
               if (substr($installer, strrpos($installer, '.')) == $file_extension && (preg_match('~^[^\._].*\.php$~i', $installer) > 0 || $installer != 'empty.txt')) {
@@ -160,7 +161,7 @@ if (SHOW_VERSION_UPDATE_IN_HEADER && !function_exists('plugin_version_check_for_
 
 // Version Checking
 // Respect the admin setting for version checking to prevent checking this if the store is disabled. (typically set because the version checker may generate warnings/errors.
-if ($zencart_com_plugin_id != 0 && SHOW_VERSION_UPDATE_IN_HEADER && (!defined($module_constant . '_PLUGIN_CHECK') || constant($module_constant . '_PLUGIN_CHECK'))) {
+if ($zencart_com_plugin_id != 0 && SHOW_VERSION_UPDATE_IN_HEADER && (!defined($module_constant . '_PLUGIN_CHECK') || constant($module_constant . '_PLUGIN_CHECK') !== 'false')) {
     $new_version_details = plugin_version_check_for_updates($zencart_com_plugin_id, $current_version);
     if ((empty($_GET['gID']) && empty($configuration_group_id) || isset($_GET['gID']) && $_GET['gID'] == $configuration_group_id) && $new_version_details != FALSE) {
         $messageStack->add("Version ".$new_version_details['latest_plugin_version']." of " . $new_version_details['title'] . ' is available at <a href="' . $new_version_details['link'] . '" target="_blank">[Details]</a>', 'caution');
