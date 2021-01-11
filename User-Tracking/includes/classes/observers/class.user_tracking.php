@@ -41,6 +41,8 @@ class user_tracking extends base
         }
 
         if ($notifier == 'NOTIFY_ADMIN_FOOTER_END') {
+//            if (defined('ADMIN_CONFIG_USER_TRACKING') && ADMIN_CONFIG_USER_TRACKING === 'false') return; // If defined, prevents logging admin activity, if not defined then logs it.
+
             $this->zen_update_user_tracking();
         }
     }
