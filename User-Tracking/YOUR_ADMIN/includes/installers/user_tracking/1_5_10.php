@@ -13,13 +13,17 @@
  * - Addressed strict error reporting associated with admin_id as an array key.
  * - Verified operational in ZC 1.5.7. up to PHP 7.3.
  * - Revised the display of session data so that the date/time was not wrapped and allowed the URI to be displayed over a longer row.
- * - Added 
+ * - Added javascript to bring the selected session to view.
+ * - Began using array variable to simplify consistent modification of page html.
+ * - Added ability to disable display of admin activity.
  * - Refactored the observer class. Eliminated excess else statements.
  * - Moved code to a variable assignment instead of processing within a function.
  * - Made use of some of the unused internal variables.
  * - Removed redundant checks against the value of some global variables.
  * - Added database removal code to observer so can be used more robustly, even possibly automatically.
  * - Simplified zen_check_bot function.
+ * - Updated the installer to remove variable $current_version, ensure operation,
+ *   provide compatibility for longer version identifiers,
  **/
 
 $zc150 = (PROJECT_VERSION_MAJOR > 1 || (PROJECT_VERSION_MAJOR == 1 && substr(PROJECT_VERSION_MINOR, 0, 3) >= 5));
