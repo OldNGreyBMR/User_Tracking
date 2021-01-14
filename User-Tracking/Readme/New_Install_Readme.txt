@@ -1,5 +1,5 @@
 Contribution:  User Tracking
-Version:  V.1.5.8
+Version:  V.1.5.10
 
 Designed for: Zen Cart v1.5 Release
 Converted into Zen by: Dave Kennelly dave@open-operations.com
@@ -75,6 +75,31 @@ This tool allows for you to see the click patterns of the users through your sit
      https://github.com/zencart/zencart/commit/f891d240fe199af7510a9a4ae72024f66dd1f33c have been applied.
 7-7- still problem, take a look at forum (forum address at the top of this readme) and submit your question.
 
+Updated 01/02/2020 Version 1.5.10 mc12345678:
+1. Addressed strict error reporting associated with admin_id as an array key.
+2. Verified operational in ZC 1.5.7. up to PHP 7.3.
+3. Revised the display of session data so that the date/time was not wrapped and allowed the URI to be displayed over a longer row.
+4. Added javascript to bring the selected session to view.
+5. Began using array variable to simplify consistent modification of page html.
+6. Added ability to disable display of admin activity.
+7. Refactored the observer class. Eliminated excess else statements.
+8. Moved code to a variable assignment instead of processing within a function.
+9. Made use of some of the unused internal variables.
+10. Removed redundant checks against the value of some global variables.
+11. Added database removal code to observer so can be used more robustly, even possibly automatically.
+12. Simplified zen_check_bot function.
+13. Updated the installer to remove variable $current_version, ensure operation,
+14. provide compatibility for longer version identifiers,
+
+
+Updated 01/02/2019 Version 1.5.9 mc12345678:
+1. Addressed multiple strict error reporting warning notifications.
+2. Verified operational in ZC 1.5.6. up to PHP 7.2.
+3. Renamed table class information so that does not replace the ZC default table code, although this was not made responsive yet.
+4. Updated version installers to prevent generating mydebug logs when executing the installation on a newer system.
+5. Refactored primary class file.
+6. Modified session collection information to only collect/restore session data if it exists as defined.
+7. Added currency session data to better support shopping cart review of tracked user without strict warning notifications.
 
 Updated 07/24/2017 Version 1.5.8 mc12345678:
 1. Add an additional check to prevent an admin mydebug log being when the selection is made to display

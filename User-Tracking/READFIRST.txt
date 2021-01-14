@@ -1,4 +1,4 @@
-Read the HOW_TO_UPDATE-V1.5.x.txt or New_Install_Readme.txt files in the Readme folder before continuing.  The text below is related to future modifications of this plug-in and does not offer any other signficant information.
+Read the HOW_TO_UPDATE-V1.5.x.txt (see file in version at or before version 1.5.3) or New_Install_Readme.txt files in the Readme folder before continuing.  The text below is related to future modifications of this plug-in and does not offer any other signficant information.
 
 Forum is located at: http://www.zen-cart.com/showthread.php?35081-User-tracking-mod
 
@@ -13,3 +13,5 @@ supported and updated geo information available from: http://geolite.maxmind.com
 a newer processor is needed to support geo information available from: http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz
 This product includes GeoLite data created by MaxMind, available from 
 <a href="http://www.maxmind.com">http://www.maxmind.com</a>.
+
+Consideration being given to reworking the path content captured which would likely modify the data table structure.
