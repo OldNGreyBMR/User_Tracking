@@ -96,7 +96,7 @@ class user_tracking extends base
                 $page_desc .= zen_get_products_name((int)$_GET['products_id']);
             }
         } else {
-            $page_desc = defined('HEADING_TITLE') ? HEADING_TITLE : (IS_ADMIN_FLAG !== true ? NAVBAR_TITLE : '');
+            $page_desc = defined('HEADING_TITLE') ? HEADING_TITLE : (defined('NAVBAR_TITLE') ? NAVBAR_TITLE : '');
             if (IS_ADMIN_FLAG === true && (empty($page_desc) || !defined('HEADING_TITLE'))) {
                 $page_desc_values = $db->Execute("select configuration_group_title from " . TABLE_CONFIGURATION_GROUP . " where configuration_group_id = " . (int)(isset($_GET['gID']) ? $_GET['gID'] : 0));
                 $page_desc        = (!$page_desc_values->EOF) ? $page_desc_values->fields['configuration_group_title'] : '';
