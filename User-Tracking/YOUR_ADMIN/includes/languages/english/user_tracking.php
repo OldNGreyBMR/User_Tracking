@@ -50,6 +50,8 @@ define('TEXT_USER_FILTER_ONLY','<label for="ShowOnlyFiltered">Show Filtered</lab
 define('TEXT_USER_FILTER_PREFIX', 'Filter: ');
 
 define('TEXT_HAS_BEEN_PURGED', 'All User Records Older Than 72 Hours Purged!');
+define('TEXT_DELETED_FROM', '%1$s from ');
+define('TEXT_HAS_BEEN_DELETED', '%2$s%1$s has been deleted. <br />');
 define('TEXT_SELECT_VIEW', 'SELECT VIEW');
 define('TEXT_BACK_TO', 'Back to');
 define('TEXT_FORWARD_TO', 'Forward to ');

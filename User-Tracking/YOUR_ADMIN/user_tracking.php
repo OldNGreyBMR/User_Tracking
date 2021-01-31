@@ -254,7 +254,7 @@
     foreach ($excluded_ips as $skip_ip)
     {
       $db->Execute('DELETE FROM ' . TABLE_USER_TRACKING . " WHERE ip_address = '" . (trim($skip_ip)) . "'");
-      $deleted_ip_text .= '<br />' . "\n" . $skip_ip . ' from ' . CONFIG_USER_TRACKING_EXCLUDED . ' has been deleted.<br />';
+      $deleted_ip_text .= '<br />' . "\n" . sprintf(TEXT_HAS_BEEN_DELETED, CONFIG_USER_TRACKING_EXCLUDED, sprintf(TEXT_DELETED_FROM, $skip_ip));
     }
   }
 
@@ -264,7 +264,7 @@
   {
     $db->Execute("DELETE FROM " . TABLE_USER_TRACKING . " WHERE session_id = '" . $_POST['delsession'] . "'");
 //    echo $_POST['delsession'] . TEXT_HAS_BEEN_DELETED . ' has been deleted. <p>';
-    $deleted_session_text = $_POST['delsession'] . TEXT_HAS_BEEN_DELETED . ' has been deleted. <br />';
+    $deleted_session_text = sprintf(TEXT_HAS_BEEN_DELETED, $_POST['delsession'], '');
   }
 
   $whos_online =
