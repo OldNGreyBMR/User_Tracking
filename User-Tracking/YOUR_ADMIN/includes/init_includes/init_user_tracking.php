@@ -30,12 +30,12 @@ if (defined('CONFIG_' . $module_constant . '_VERSION')) {
     $installed = $db->Execute("SELECT configuration_group_id FROM " . TABLE_CONFIGURATION_GROUP . " WHERE configuration_group_title = '" . $module_name . " Config'");
     if ($installed->EOF || $installed->RecordCount() == 0)
     {
-      // The configuration group does not exist, so add it to the database and establish the configuration_group_id.
-      $db->Execute("INSERT INTO " . TABLE_CONFIGURATION_GROUP . " (configuration_group_title, configuration_group_description, sort_order, visible) VALUES ('" . $module_name . " Config', 'Set " . $module_name . " Configuration Options', '1', '1');");
-      $configuration_group_id = (int)$db->Insert_ID();
+        // The configuration group does not exist, so add it to the database and establish the configuration_group_id.
+        $db->Execute("INSERT INTO " . TABLE_CONFIGURATION_GROUP . " (configuration_group_title, configuration_group_description, sort_order, visible) VALUES ('" . $module_name . " Config', 'Set " . $module_name . " Configuration Options', '1', '1');");
+        $configuration_group_id = (int)$db->Insert_ID();
     } else {
-      // Configuration group exists in database, so get the configuration_group_id.
-      $configuration_group_id = (int)$installed->fields['configuration_group_id'];
+        // Configuration group exists in database, so get the configuration_group_id.
+        $configuration_group_id = (int)$installed->fields['configuration_group_id'];
     }
 
     // Set the sort order of the configuration group to be equal to the configuration_group_id, idea being that each new group will be added to the end.
@@ -44,11 +44,11 @@ if (defined('CONFIG_' . $module_constant . '_VERSION')) {
     // If the configuration group did not previously exist, then neither did the version information because it is created in this module.
     if ($installed->EOF || $installed->RecordCount() == 0)
     {
-      $db->Execute("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, use_function, set_function) VALUES
-                      ('" . $module_name . " (Version Installed)', 'CONFIG_" . $module_constant . "_VERSION', '" . ${$module_constant . "_current_version"} . "', 'Version installed:', " . (int)$configuration_group_id . ", 0, NOW(), NULL, 'zen_cfg_select_option(array(\'0.0.0\'),');");
-      $db->Execute("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, use_function, set_function) VALUES
-                      ('" . $module_name . " (Update Check)', '" . $module_constant . "_PLUGIN_CHECK', '" . SHOW_VERSION_UPDATE_IN_HEADER . "', 'Allow version checking if Zen Cart version checking enabled<br/><br/>If false, no version checking performed.<br/>If true, then only if Zen Cart version checking is on:', " . (int)$configuration_group_id . ", 0, NOW(), NULL, 'zen_cfg_select_option(array(\'true\', \'false\'),');");
-      define($module_constant . '_PLUGIN_CHECK', SHOW_VERSION_UPDATE_IN_HEADER);
+        $db->Execute("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, use_function, set_function) VALUES
+                        ('" . $module_name . " (Version Installed)', 'CONFIG_" . $module_constant . "_VERSION', '" . ${$module_constant . "_current_version"} . "', 'Version installed:', " . (int)$configuration_group_id . ", 0, NOW(), NULL, 'zen_cfg_select_option(array(\'0.0.0\'),');");
+        $db->Execute("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, use_function, set_function) VALUES
+                        ('" . $module_name . " (Update Check)', '" . $module_constant . "_PLUGIN_CHECK', '" . SHOW_VERSION_UPDATE_IN_HEADER . "', 'Allow version checking if Zen Cart version checking enabled<br/><br/>If false, no version checking performed.<br/>If true, then only if Zen Cart version checking is on:', " . (int)$configuration_group_id . ", 0, NOW(), NULL, 'zen_cfg_select_option(array(\'true\', \'false\'),');");
+        define($module_constant . '_PLUGIN_CHECK', SHOW_VERSION_UPDATE_IN_HEADER);
     }
 }
 if ($configuration_group_id == '') {
@@ -58,47 +58,47 @@ if ($configuration_group_id == '') {
 
 // Obtain a list of files in the installer directory.
 if (is_dir($module_installer_directory)) {
-  $installers = scandir($module_installer_directory, (defined('SCANDIR_SORT_DESCENDING') ? SCANDIR_SORT_DESCENDING : 1)); // Sorted Descending
+    $installers = scandir($module_installer_directory, (defined('SCANDIR_SORT_DESCENDING') ? SCANDIR_SORT_DESCENDING : 1)); // Sorted Descending
 
-  if (!empty($installers)) {
-    natsort($installers);
-  }
-
-  // Determine the extension of this file to be used for comparison on the others.
-  $file_extension = substr($PHP_SELF, strrpos($PHP_SELF, '.'));
-  $file_extension_len = strlen($file_extension); // Allow file extension to be "flexible"
-
-  // Step through each installer file to establish the first file that matches the search criteria.
-  while (substr($installers[0], strrpos($installers[0], '.')) != $file_extension || preg_match('~^[^\._].*\.php$~i', $installers[0]) <= 0 || $installers[0] == 'empty.txt') {
-    unset($installers[0]);
-    if (count($installers) == 0) {
-      break;
+    if (!empty($installers)) {
+        natsort($installers);
     }
-    $installers = array_values($installers);
-  }
 
-  // If there are still installer files to process, then do so.
-  if (($num_installers = count($installers)) > 0) {
-      $newest_version = $installers[$num_installers - 1];
-      $newest_version = substr($newest_version, 0, -1 * $file_extension_len);
+    // Determine the extension of this file to be used for comparison on the others.
+    $file_extension = substr($PHP_SELF, strrpos($PHP_SELF, '.'));
+    $file_extension_len = strlen($file_extension); // Allow file extension to be "flexible"
 
-//      sort($installers);
-      if (version_compare($newest_version, ${$module_constant . "_current_version"}) > 0) {
-          foreach ($installers as $installer) {
-              if (!(substr($installer, strrpos($installer, '.')) == $file_extension && (preg_match('~^[^\._].*\.php$~i', $installer) > 0 || $installer != 'empty.txt'))) {
-                  continue;
-              }
-              if (!(version_compare($newest_version, substr($installer, 0, -1 * $file_extension_len)) >= 0 && version_compare(${$module_constant . "_current_version"}, substr($installer, 0, -1 * $file_extension_len)) < 0)) {
-                  continue;
-              }
+    // Step through each installer file to establish the first file that matches the search criteria.
+    while (substr($installers[0], strrpos($installers[0], '.')) != $file_extension || preg_match('~^[^\._].*\.php$~i', $installers[0]) <= 0 || $installers[0] == 'empty.txt') {
+        unset($installers[0]);
+        if (count($installers) == 0) {
+            break;
+        }
+        $installers = array_values($installers);
+    }
 
-              include($module_installer_directory . '/' . $installer);
-              ${$module_constant . "_current_version"} = str_replace("_", ".", substr($installer, 0, -1 * $file_extension_len));
-              $db->Execute("UPDATE " . TABLE_CONFIGURATION . " SET configuration_value = '" . ${$module_constant . "_current_version"} . "', set_function = 'zen_cfg_select_option(array(\'" . ${$module_constant . "_current_version"} . "\'),' WHERE configuration_key = 'CONFIG_" . $module_constant . "_VERSION' LIMIT 1;");
-              $messageStack->add("Installed " . $module_name . " v" . ${$module_constant . "_current_version"}, 'success');
-          }
-      }
-  }
+    // If there are still installer files to process, then do so.
+    if (($num_installers = count($installers)) > 0) {
+        $newest_version = $installers[$num_installers - 1];
+        $newest_version = substr($newest_version, 0, -1 * $file_extension_len);
+
+//        sort($installers);
+        if (version_compare($newest_version, ${$module_constant . "_current_version"}) > 0) {
+            foreach ($installers as $installer) {
+                if (!(substr($installer, strrpos($installer, '.')) == $file_extension && (preg_match('~^[^\._].*\.php$~i', $installer) > 0 || $installer != 'empty.txt'))) {
+                    continue;
+                }
+                if (!(version_compare($newest_version, substr($installer, 0, -1 * $file_extension_len)) >= 0 && version_compare(${$module_constant . "_current_version"}, substr($installer, 0, -1 * $file_extension_len)) < 0)) {
+                    continue;
+                }
+
+                include($module_installer_directory . '/' . $installer);
+                ${$module_constant . "_current_version"} = str_replace("_", ".", substr($installer, 0, -1 * $file_extension_len));
+                $db->Execute("UPDATE " . TABLE_CONFIGURATION . " SET configuration_value = '" . ${$module_constant . "_current_version"} . "', set_function = 'zen_cfg_select_option(array(\'" . ${$module_constant . "_current_version"} . "\'),' WHERE configuration_key = 'CONFIG_" . $module_constant . "_VERSION' LIMIT 1;");
+                $messageStack->add("Installed " . $module_name . " v" . ${$module_constant . "_current_version"}, 'success');
+            }
+        }
+    }
 }
 
 
