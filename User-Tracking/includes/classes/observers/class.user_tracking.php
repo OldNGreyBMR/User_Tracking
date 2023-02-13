@@ -86,7 +86,9 @@ class user_tracking extends base
                 $cPath_array         = zen_parse_category_path($_GET['cPath']);
                 $cPath               = implode('_', $cPath_array);
                 $current_category_id = array_pop($cPath_array);
-                if (function_exists('zen_get_categories_name')) {
+                if (function_exists('zen_get_category_name')) {
+                    $page_desc           = zen_get_category_name((int)$current_category_id) . '&nbsp;-&nbsp;';
+                } elseif (function_exists('zen_get_categories_name')) {
                     $page_desc           = zen_get_categories_name((int)$current_category_id) . '&nbsp;-&nbsp;';
                 } elseif (function_exists('zen_get_categories_name_from_product')) {
                     $page_desc           = zen_get_categories_name_from_product((int)$current_category_id) . '&nbsp;-&nbsp;';
