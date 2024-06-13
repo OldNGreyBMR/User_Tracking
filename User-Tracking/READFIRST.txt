@@ -15,3 +15,7 @@ This product includes GeoLite data created by MaxMind, available from
 <a href="http://www.maxmind.com">http://www.maxmind.com</a>.
 
 Consideration being given to reworking the path content captured which would likely modify the data table structure.
+
+===========================
+2024-06-13 Changes by BMR
+/includes/classes/observers/ class.user_tracking.php updated for PHP8.3 and NULL in URL
