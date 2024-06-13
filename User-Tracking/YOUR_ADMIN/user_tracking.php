@@ -1,26 +1,18 @@
 <?php
 //
 // +----------------------------------------------------------------------+
-// |zen-cart Open Source E-commerce                                       |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 2003 The zen-cart developers                           |
-// |                                                                      |
-// | http://www.zen-cart.com/index.php                                    |
-// |                                                                      |
-// | Portions Copyright (c) 2003 osCommerce                               |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 2.0 of the GPL license,       |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available through the world-wide-web at the following url:           |
-// | http://www.zen-cart.com/license/2_0.txt.                             |
-// | If you did not receive a copy of the zen-cart license and are unable |
-// | to obtain it through the world-wide-web, please send a note to       |
-// | license@zen-cart.com so we can mail you a copy immediately.          |
+// | Copyright (c) 2023 The zen-cart developers                           |
 // +----------------------------------------------------------------------+
 //  $Id: usertracking 2004-12-1 dave@open-operations.com http://open-operations.com
 //  UPDATED 2018-01-02 mc12345678 http://mc12345678.com
+//
+//BMH 2023-02-14 TEXT_HAS_BEEN_DELETED
+//BMH 2023-04-11 ln210 strftime
+// BMH 2024-03-09 github changes ln250 ln263
+
   require 'includes/application_top.php';
   require DIR_WS_CLASSES . 'currencies.php';
+if (!defined('TEXT_HAS_BEEN_DELETED')) {define('TEXT_HAS_BEEN_DELETED', '');} //BMH
 
   $currencies = new currencies();
   require DIR_WS_INCLUDES . 'geoip.inc'; // <- Updated file usually available from: https://raw.github.com/maxmind/geoip-api-php/tree/master/src/geoip.inc
@@ -70,7 +62,7 @@
     if (empty($_POST['DateChange'])) {
       $_POST['DateChange'] = '';
     }
-    
+
     switch ($_POST['DateChange']) {
       case trim(TEXT_BACK_TO . ' ' . TEXT_TODAY):
         $new_time = $_POST['time'] - ((int)(($_POST['time'] - $currentTime) / 86400) + 1) * 86400;
@@ -204,7 +196,8 @@
   }
 
   for ($i=1; $i<13; $i++) {
-    $date_arr['month'][] = $date_month[] = array('id' => sprintf('%02d', $i), 'text' => strftime('%B',mktime(0,0,0,$i,1,2000)));
+    // BMH $date_arr['month'][] = $date_month[] = array('id' => sprintf('%02d', $i), 'text' => strftime('%B',mktime(0,0,0,$i,1,2000)));
+    $date_arr['month'][] = $date_month[] = array('id' => $zcDate->output('%02d', $i), 'text' => $zcDate->output('%B',mktime(0,0,0,$i,1,2000)));
   }
 
   for ($i=1; $i <10; $i++) {
@@ -254,7 +247,9 @@
     foreach ($excluded_ips as $skip_ip)
     {
       $db->Execute('DELETE FROM ' . TABLE_USER_TRACKING . " WHERE ip_address = '" . (trim($skip_ip)) . "'");
-      $deleted_ip_text .= '<br />' . "\n" . sprintf(TEXT_HAS_BEEN_DELETED, CONFIG_USER_TRACKING_EXCLUDED, sprintf(TEXT_DELETED_FROM, $skip_ip));
+      //$deleted_ip_text .= '<br />' . "\n" . $skip_ip . ' from ' . CONFIG_USER_TRACKING_EXCLUDED . ' has been deleted.<br />';
+      $deleted_ip_text .= '<br />' . "\n" . sprintf(TEXT_HAS_BEEN_DELETED, CONFIG_USER_TRACKING_EXCLUDED, sprintf(TEXT_DELETED_FROM, $skip_ip));  // BMH github change
+
     }
   }
 
@@ -264,7 +259,8 @@
   {
     $db->Execute("DELETE FROM " . TABLE_USER_TRACKING . " WHERE session_id = '" . $_POST['delsession'] . "'");
 //    echo $_POST['delsession'] . TEXT_HAS_BEEN_DELETED . ' has been deleted. <p>';
-    $deleted_session_text = sprintf(TEXT_HAS_BEEN_DELETED, $_POST['delsession'], '');
+   // $deleted_session_text = $_POST['delsession'] . TEXT_HAS_BEEN_DELETED . ' has been deleted. <br />';
+   $deleted_session_text = sprintf(TEXT_HAS_BEEN_DELETED, $_POST['delsession'], ''); // BMH github change
   }
 
   $whos_online =
