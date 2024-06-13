@@ -18,9 +18,10 @@
 // | license@zen-cart.com so we can mail you a copy immediately.          |
 // +----------------------------------------------------------------------+
 //  $Id: usertracking 2004-12-1 dave@open-operations.com http://open-operations.com
+// BMH 2024-03-09 github changes
 define('EXPLANATION', 'This tool allows for you to see the click patterns of the users through your site, organized by
 sessions.  This data can be very valuable to those looking for how to improve your site by watching how customers actually
-use it.  You can surf back and forth through the days by using the link below.  <br />
+use it.  You can surf back and forth through the days by using the link below.  <br>
 Idle time is calculated from the current date/time and is based off of the last action taken during the session.');
 define('HEADING_TITLE', 'User Tracking');
 
@@ -50,8 +51,9 @@ define('TEXT_USER_FILTER_ONLY','<label for="ShowOnlyFiltered">Show Filtered</lab
 define('TEXT_USER_FILTER_PREFIX', 'Filter: ');
 
 define('TEXT_HAS_BEEN_PURGED', 'All User Records Older Than 72 Hours Purged!');
-define('TEXT_DELETED_FROM', '%1$s from ');
-define('TEXT_HAS_BEEN_DELETED', '%2$s%1$s has been deleted. <br />');
+define('TEXT_DELETED_FROM', '%1$s from ');                           // BMH added 2024-03-09
+define('TEXT_HAS_BEEN_DELETED', '%2$s%1$s has been deleted. <br>'); // BMH added 2024-03-09
+
 define('TEXT_SELECT_VIEW', 'SELECT VIEW');
 define('TEXT_BACK_TO', 'Back to');
 define('TEXT_FORWARD_TO', 'Forward to ');
