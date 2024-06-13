@@ -5,6 +5,10 @@
  *
  * @author mc12345678
  */
+ //BMH 2023-02-14 ln90 zen_get_category_name()
+ // BMH 2024-02-29 ln100 NAVBAR_TITLE
+ // BMH 2024-03-22 ln119 ln128 last_page_url and referer_url cannot be null [SQL injection hacker]
+ // BMH 2024-06-13 ln 128 revised again as NULL in url braks sql
 class user_tracking extends base
 {
     function __construct()
@@ -98,6 +102,7 @@ class user_tracking extends base
                 $page_desc .= zen_get_products_name((int)$_GET['products_id']);
             }
         } else {
+            //$page_desc = defined('HEADING_TITLE') ? HEADING_TITLE : (IS_ADMIN_FLAG !== true ? NAVBAR_TITLE : ''); // BMH
             $page_desc = defined('HEADING_TITLE') ? HEADING_TITLE : (defined('NAVBAR_TITLE') ? NAVBAR_TITLE : '');
             if (IS_ADMIN_FLAG === true && (empty($page_desc) || !defined('HEADING_TITLE'))) {
                 $page_desc_values = $db->Execute("select configuration_group_title from " . TABLE_CONFIGURATION_GROUP . " where configuration_group_id = " . (int)(isset($_GET['gID']) ? $_GET['gID'] : 0));
@@ -114,9 +119,16 @@ class user_tracking extends base
 
         $page_desc = substr($page_desc, 0, 63);
 
+        // $wo_last_page_url = substr($wo_last_page_url, 0, 125); // BMR if NULL make = default
+        // $wo_last_page_url = substr($wo_last_page_url, 0, 125) ?? 'default';
+
         $wo_last_page_url = substr($wo_last_page_url, 0, 125);
 
         $referer_url = substr($referer_url, 0, 253);
+        // echo 'ln125 $referer_url = ' . $referer_url; //BMH DEBUG
+        $ref_url = str_ireplace('NULL', 'GARB', $referer_url);  // hackers using NULL in URL
+        $referer_url = $ref_url;
+       //echo 'ln128 $referer_url = ' . $referer_url; //BMH DEBUG
 
         $user_track_array = array();
 
