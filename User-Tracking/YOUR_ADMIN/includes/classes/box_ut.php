@@ -5,7 +5,7 @@
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
  * @version $Id: Author: DrByte  Sat Oct 17 21:34:27 2015 -0400 Modified in v1.5.5 $
- */
+ */ // BMH 2023-04-11 declare vars
 if (!defined('IS_ADMIN_FLAG')) {
   die('Illegal Access');
 }
@@ -25,6 +25,11 @@ if (!defined('IS_ADMIN_FLAG')) {
 */
 
   class box_ut extends boxTableBlock_ut {
+   
+    public $heading;
+    public $contents;
+    
+    
     function __construct() {
       $this->heading = array();
       $this->contents = array();
